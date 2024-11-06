@@ -22,7 +22,7 @@ function Library:CreateWindow(title)
     MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MainFrame.BorderSizePixel = 0
     MainFrame.Position = UDim2.new(0.3, 0, 0.2, 0)
-    MainFrame.Size = UDim2.new(0, 350, 0, 250)  -- Diminuindo o tamanho para uma HUD menor
+    MainFrame.Size = UDim2.new(0, 350, 0, 250)  -- Tamanho da HUD
     MainFrame.BackgroundTransparency = 0.1
     MainFrame.ClipsDescendants = true
     MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -85,18 +85,38 @@ function Library:CreateWindow(title)
 
     -- Minimize and Unload functionality
     local isMinimized = false
+    local MinimizeBox = Instance.new("TextButton")
+    
+    MinimizeBox.Name = "MinimizeBox"
+    MinimizeBox.Parent = GUI
+    MinimizeBox.Size = UDim2.new(0, 100, 0, 30)
+    MinimizeBox.Position = MainFrame.Position
+    MinimizeBox.Text = "Open HUD"
+    MinimizeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    MinimizeBox.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+    MinimizeBox.BorderSizePixel = 0
+    MinimizeBox.Visible = false
+    MinimizeBox.Font = Enum.Font.GothamBold
+    MinimizeBox.TextSize = 14
+
     MinimizeButton.MouseButton1Click:Connect(function()
         isMinimized = not isMinimized
-        TabContainer.Visible = not isMinimized
-        TabBar.Visible = not isMinimized
-        MainFrame.Size = isMinimized and UDim2.new(0, 350, 0, 30) or UDim2.new(0, 350, 0, 250)
+        MainFrame.Visible = not isMinimized
+        MinimizeBox.Visible = isMinimized
     end)
 
     UnloadButton.MouseButton1Click:Connect(function()
         GUI:Destroy()
     end)
 
-    -- Dragging functionality
+    -- Functionality to restore HUD from MinimizeBox
+    MinimizeBox.MouseButton1Click:Connect(function()
+        isMinimized = false
+        MainFrame.Visible = true
+        MinimizeBox.Visible = false
+    end)
+
+    -- Dragging functionality for MainFrame
     local dragging = false
     local dragStart
     local startPos
@@ -118,6 +138,28 @@ function Library:CreateWindow(title)
         if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
             local delta = input.Position - dragStart
             MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+            MinimizeBox.Position = MainFrame.Position
+        end
+    end)
+
+    -- Dragging functionality for MinimizeBox
+    MinimizeBox.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            dragStart = input.Position
+            startPos = MinimizeBox.Position
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+
+    MinimizeBox.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
+            local delta = input.Position - dragStart
+            MinimizeBox.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
         end
     end)
 
