@@ -22,7 +22,7 @@ function Library:CreateWindow(title)
     MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MainFrame.BorderSizePixel = 0
     MainFrame.Position = UDim2.new(0.3, 0, 0.2, 0)
-    MainFrame.Size = UDim2.new(0, 500, 0, 400)
+    MainFrame.Size = UDim2.new(0, 350, 0, 250)  -- Diminuindo o tamanho para uma HUD menor
     MainFrame.BackgroundTransparency = 0.1
     MainFrame.ClipsDescendants = true
     MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -32,11 +32,11 @@ function Library:CreateWindow(title)
     TitleLabel.Parent = MainFrame
     TitleLabel.BackgroundTransparency = 1
     TitleLabel.Position = UDim2.new(0, 0, 0, 0)
-    TitleLabel.Size = UDim2.new(0.8, 0, 0, 40)
+    TitleLabel.Size = UDim2.new(0.8, 0, 0, 30)
     TitleLabel.Font = Enum.Font.GothamBold
     TitleLabel.Text = title
     TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TitleLabel.TextSize = 20
+    TitleLabel.TextSize = 16
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Center
 
     -- Minimize and Unload Buttons
@@ -47,7 +47,7 @@ function Library:CreateWindow(title)
     MinimizeButton.Font = Enum.Font.GothamBold
     MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     MinimizeButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    MinimizeButton.Size = UDim2.new(0, 40, 0, 40)
+    MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
     MinimizeButton.Position = UDim2.new(0.8, 0, 0, 0)
     MinimizeButton.BorderSizePixel = 0
 
@@ -58,7 +58,7 @@ function Library:CreateWindow(title)
     UnloadButton.Font = Enum.Font.GothamBold
     UnloadButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     UnloadButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    UnloadButton.Size = UDim2.new(0, 40, 0, 40)
+    UnloadButton.Size = UDim2.new(0, 30, 0, 30)
     UnloadButton.Position = UDim2.new(0.88, 0, 0, 0)
     UnloadButton.BorderSizePixel = 0
 
@@ -67,15 +67,15 @@ function Library:CreateWindow(title)
     TabBar.Parent = MainFrame
     TabBar.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
     TabBar.BorderSizePixel = 0
-    TabBar.Position = UDim2.new(0, 0, 0, 40)
-    TabBar.Size = UDim2.new(1, 0, 0, 30)
-    
+    TabBar.Position = UDim2.new(0, 0, 0, 30)
+    TabBar.Size = UDim2.new(1, 0, 0, 25)
+
     -- Tab Container
     TabContainer.Name = "TabContainer"
     TabContainer.Parent = MainFrame
     TabContainer.BackgroundTransparency = 1
-    TabContainer.Position = UDim2.new(0, 0, 0, 70)
-    TabContainer.Size = UDim2.new(1, 0, 1, -70)
+    TabContainer.Position = UDim2.new(0, 0, 0, 55)
+    TabContainer.Size = UDim2.new(1, 0, 1, -55)
 
     -- Layout for Tabs
     UIListLayout.Parent = TabBar
@@ -89,7 +89,7 @@ function Library:CreateWindow(title)
         isMinimized = not isMinimized
         TabContainer.Visible = not isMinimized
         TabBar.Visible = not isMinimized
-        MainFrame.Size = isMinimized and UDim2.new(0, 500, 0, 40) or UDim2.new(0, 500, 0, 400)
+        MainFrame.Size = isMinimized and UDim2.new(0, 350, 0, 30) or UDim2.new(0, 350, 0, 250)
     end)
 
     UnloadButton.MouseButton1Click:Connect(function()
@@ -115,11 +115,9 @@ function Library:CreateWindow(title)
     end)
 
     TitleLabel.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement then
+        if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
             local delta = input.Position - dragStart
-            if dragging then
-                MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-            end
+            MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
         end
     end)
 
@@ -166,7 +164,7 @@ function Library:CreateWindow(title)
             local GroupboxFrame = Instance.new("Frame")
             GroupboxFrame.Name = name
             GroupboxFrame.Parent = TabFrame
-            GroupboxFrame.Size = UDim2.new(1, -10, 0, 150)
+            GroupboxFrame.Size = UDim2.new(1, -10, 0, 100)
             GroupboxFrame.Position = UDim2.new(0, 5, 0, 5)
             GroupboxFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
             GroupboxFrame.BorderSizePixel = 0
@@ -174,7 +172,7 @@ function Library:CreateWindow(title)
             local GroupboxTitle = Instance.new("TextLabel")
             GroupboxTitle.Parent = GroupboxFrame
             GroupboxTitle.Text = name
-            GroupboxTitle.Size = UDim2.new(1, 0, 0, 25)
+            GroupboxTitle.Size = UDim2.new(1, 0, 0, 20)
             GroupboxTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
             GroupboxTitle.TextXAlignment = Enum.TextXAlignment.Left
             GroupboxTitle.Font = Enum.Font.GothamBold
@@ -182,16 +180,16 @@ function Library:CreateWindow(title)
 
             local ContentFrame = Instance.new("Frame")
             ContentFrame.Parent = GroupboxFrame
-            ContentFrame.Position = UDim2.new(0, 0, 0, 25)
-            ContentFrame.Size = UDim2.new(1, 0, 1, -25)
+            ContentFrame.Position = UDim2.new(0, 0, 0, 20)
+            ContentFrame.Size = UDim2.new(1, 0, 1, -20)
             ContentFrame.BackgroundTransparency = 1
 
             function Groupbox:CreateButton(text, callback)
                 local Button = Instance.new("TextButton")
                 Button.Parent = ContentFrame
                 Button.Text = text
-                Button.Size = UDim2.new(1, -10, 0, 30)
-                Button.Position = UDim2.new(0, 5, 0, #ContentFrame:GetChildren() * 35)
+                Button.Size = UDim2.new(1, -10, 0, 25)
+                Button.Position = UDim2.new(0, 5, 0, #ContentFrame:GetChildren() * 30)
                 Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
                 Button.TextColor3 = Color3.fromRGB(255, 255, 255)
                 Button.Font = Enum.Font.Gotham
@@ -204,8 +202,8 @@ function Library:CreateWindow(title)
                 local Toggle = Instance.new("TextButton")
                 Toggle.Parent = ContentFrame
                 Toggle.Text = text
-                Toggle.Size = UDim2.new(1, -10, 0, 30)
-                Toggle.Position = UDim2.new(0, 5, 0, #ContentFrame:GetChildren() * 35)
+                Toggle.Size = UDim2.new(1, -10, 0, 25)
+                Toggle.Position = UDim2.new(0, 5, 0, #ContentFrame:GetChildren() * 30)
                 Toggle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
                 Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
                 Toggle.Font = Enum.Font.Gotham
@@ -223,8 +221,8 @@ function Library:CreateWindow(title)
                 local Dropdown = Instance.new("TextButton")
                 Dropdown.Parent = ContentFrame
                 Dropdown.Text = text
-                Dropdown.Size = UDim2.new(1, -10, 0, 30)
-                Dropdown.Position = UDim2.new(0, 5, 0, #ContentFrame:GetChildren() * 35)
+                Dropdown.Size = UDim2.new(1, -10, 0, 25)
+                Dropdown.Position = UDim2.new(0, 5, 0, #ContentFrame:GetChildren() * 30)
                 Dropdown.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
                 Dropdown.TextColor3 = Color3.fromRGB(255, 255, 255)
                 Dropdown.Font = Enum.Font.Gotham
@@ -233,7 +231,7 @@ function Library:CreateWindow(title)
 
                 local DropdownList = Instance.new("Frame")
                 DropdownList.Parent = Dropdown
-                DropdownList.Size = UDim2.new(1, 0, 0, #options * 30)
+                DropdownList.Size = UDim2.new(1, 0, 0, #options * 25)
                 DropdownList.Position = UDim2.new(0, 0, 1, 0)
                 DropdownList.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
                 DropdownList.Visible = false
@@ -242,8 +240,8 @@ function Library:CreateWindow(title)
                     local OptionButton = Instance.new("TextButton")
                     OptionButton.Parent = DropdownList
                     OptionButton.Text = option
-                    OptionButton.Size = UDim2.new(1, -10, 0, 30)
-                    OptionButton.Position = UDim2.new(0, 5, 0, (#DropdownList:GetChildren() - 1) * 30)
+                    OptionButton.Size = UDim2.new(1, -10, 0, 25)
+                    OptionButton.Position = UDim2.new(0, 5, 0, (#DropdownList:GetChildren() - 1) * 25)
                     OptionButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
                     OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
                     OptionButton.Font = Enum.Font.Gotham
