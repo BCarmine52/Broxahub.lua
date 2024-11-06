@@ -15,13 +15,13 @@ function Library:CreateWindow(title)
     GUI.Parent = game.CoreGui
     GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-    -- Main Frame com tamanho de 325x500 pixels e sem transparência
+    -- Main Frame com tamanho de 325x325 pixels e sem transparência
     MainFrame.Name = "MainFrame"
     MainFrame.Parent = GUI
     MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MainFrame.BorderSizePixel = 0
     MainFrame.Position = UDim2.new(0.3, 0, 0.2, 0)
-    MainFrame.Size = UDim2.new(0, 325, 0, 500)
+    MainFrame.Size = UDim2.new(0, 325, 0, 325)
     MainFrame.BackgroundTransparency = 0 -- Remover transparência
     MainFrame.ClipsDescendants = true
     MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -36,7 +36,7 @@ function Library:CreateWindow(title)
     TitleLabel.Parent = MainFrame
     TitleLabel.BackgroundTransparency = 1
     TitleLabel.Position = UDim2.new(0, 0, 0, 0)
-    TitleLabel.Size = UDim2.new(0.8, 0, 0, 30)
+    TitleLabel.Size = UDim2.new(1, 0, 0, 30) -- Ajustar para ocupar toda a largura
     TitleLabel.Font = Enum.Font.GothamBold
     TitleLabel.Text = title
     TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
