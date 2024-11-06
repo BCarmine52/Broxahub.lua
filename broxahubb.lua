@@ -15,13 +15,13 @@ function Library:CreateWindow(title)
     GUI.Parent = game.CoreGui
     GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-    -- Main Frame (HUD) aumentado de tamanho
+    -- Main Frame com tamanho de 325x500 pixels
     MainFrame.Name = "MainFrame"
     MainFrame.Parent = GUI
     MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MainFrame.BorderSizePixel = 0
     MainFrame.Position = UDim2.new(0.3, 0, 0.2, 0)
-    MainFrame.Size = UDim2.new(0, 450, 0, 350)
+    MainFrame.Size = UDim2.new(0, 325, 0, 500)
     MainFrame.BackgroundTransparency = 0.1
     MainFrame.ClipsDescendants = true
     MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -186,8 +186,8 @@ function Library:CreateWindow(title)
             ScrollingFrame.Position = UDim2.new(0, 0, 0, 0)
             ScrollingFrame.Size = UDim2.new(1, 0, 1, 0)
             ScrollingFrame.BackgroundTransparency = 1
-            ScrollingFrame.CanvasSize = UDim2.new(0, 0, 3, 0) -- Ajuste a altura conforme necessário
-            ScrollingFrame.ScrollBarThickness = 5
+            ScrollingFrame.CanvasSize = UDim2.new(0, 0, 2, 0) -- Ajuste a altura conforme necessário
+            ScrollingFrame.ScrollBarThickness = 10 -- Largura da barra de rolagem
 
             local UIListLayout = Instance.new("UIListLayout")
             UIListLayout.Parent = ScrollingFrame
