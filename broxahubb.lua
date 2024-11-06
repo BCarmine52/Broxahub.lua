@@ -15,16 +15,21 @@ function Library:CreateWindow(title)
     GUI.Parent = game.CoreGui
     GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-    -- Main Frame com tamanho de 325x500 pixels
+    -- Main Frame com tamanho de 325x500 pixels e sem transparência
     MainFrame.Name = "MainFrame"
     MainFrame.Parent = GUI
     MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MainFrame.BorderSizePixel = 0
     MainFrame.Position = UDim2.new(0.3, 0, 0.2, 0)
     MainFrame.Size = UDim2.new(0, 325, 0, 500)
-    MainFrame.BackgroundTransparency = 0.1
+    MainFrame.BackgroundTransparency = 0 -- Remover transparência
     MainFrame.ClipsDescendants = true
     MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+    
+    -- Cantos arredondados para o MainFrame
+    local MainFrameCorner = Instance.new("UICorner")
+    MainFrameCorner.CornerRadius = UDim.new(0, 10)
+    MainFrameCorner.Parent = MainFrame
 
     -- Title Label
     TitleLabel.Name = "TitleLabel"
@@ -50,6 +55,10 @@ function Library:CreateWindow(title)
     MinimizeButton.Position = UDim2.new(0.8, 0, 0, 0)
     MinimizeButton.BorderSizePixel = 0
 
+    local MinimizeCorner = Instance.new("UICorner")
+    MinimizeCorner.CornerRadius = UDim.new(0, 5)
+    MinimizeCorner.Parent = MinimizeButton
+
     local UnloadButton = Instance.new("TextButton")
     UnloadButton.Name = "UnloadButton"
     UnloadButton.Parent = MainFrame
@@ -61,6 +70,10 @@ function Library:CreateWindow(title)
     UnloadButton.Position = UDim2.new(0.88, 0, 0, 0)
     UnloadButton.BorderSizePixel = 0
 
+    local UnloadCorner = Instance.new("UICorner")
+    UnloadCorner.CornerRadius = UDim.new(0, 5)
+    UnloadCorner.Parent = UnloadButton
+
     -- Tab Bar
     TabBar.Name = "TabBar"
     TabBar.Parent = MainFrame
@@ -68,6 +81,10 @@ function Library:CreateWindow(title)
     TabBar.BorderSizePixel = 0
     TabBar.Position = UDim2.new(0, 0, 0, 30)
     TabBar.Size = UDim2.new(1, 0, 0, 25)
+
+    local TabBarCorner = Instance.new("UICorner")
+    TabBarCorner.CornerRadius = UDim.new(0, 10)
+    TabBarCorner.Parent = TabBar
 
     -- Tab Container
     TabContainer.Name = "TabContainer"
@@ -98,6 +115,10 @@ function Library:CreateWindow(title)
     MinimizeBox.Visible = false
     MinimizeBox.Font = Enum.Font.GothamBold
     MinimizeBox.TextSize = 14
+
+    local MinimizeBoxCorner = Instance.new("UICorner")
+    MinimizeBoxCorner.CornerRadius = UDim.new(0, 5)
+    MinimizeBoxCorner.Parent = MinimizeBox
 
     MinimizeButton.MouseButton1Click:Connect(function()
         isMinimized = not isMinimized
@@ -158,6 +179,10 @@ function Library:CreateWindow(title)
         TabButton.BorderSizePixel = 0
         TabButton.AutoButtonColor = false
 
+        local TabButtonCorner = Instance.new("UICorner")
+        TabButtonCorner.CornerRadius = UDim.new(0, 5)
+        TabButtonCorner.Parent = TabButton
+
         -- Tab Content
         local TabFrame = Instance.new("Frame")
         TabFrame.Name = name .. "Content"
@@ -187,7 +212,7 @@ function Library:CreateWindow(title)
             ScrollingFrame.Size = UDim2.new(1, 0, 1, 0)
             ScrollingFrame.BackgroundTransparency = 1
             ScrollingFrame.CanvasSize = UDim2.new(0, 0, 2, 0) -- Ajuste a altura conforme necessário
-            ScrollingFrame.ScrollBarThickness = 10 -- Largura da barra de rolagem
+            ScrollingFrame.ScrollBarThickness = 10
 
             local UIListLayout = Instance.new("UIListLayout")
             UIListLayout.Parent = ScrollingFrame
@@ -205,6 +230,11 @@ function Library:CreateWindow(title)
                 Button.TextSize = 14
                 Button.BorderSizePixel = 0
                 Button.MouseButton1Click:Connect(callback)
+
+                -- Botão com cantos arredondados
+                local ButtonCorner = Instance.new("UICorner")
+                ButtonCorner.CornerRadius = UDim.new(0, 5)
+                ButtonCorner.Parent = Button
             end
 
             function Groupbox:CreateToggle(text, callback)
@@ -218,50 +248,16 @@ function Library:CreateWindow(title)
                 Toggle.TextSize = 14
                 Toggle.BorderSizePixel = 0
                 local isToggled = false
+
+                -- Cantos arredondados para o Toggle
+                local ToggleCorner = Instance.new("UICorner")
+                ToggleCorner.CornerRadius = UDim.new(0, 5)
+                ToggleCorner.Parent = Toggle
+
                 Toggle.MouseButton1Click:Connect(function()
                     isToggled = not isToggled
                     callback(isToggled)
                     Toggle.BackgroundColor3 = isToggled and Color3.fromRGB(50, 50, 50) or Color3.fromRGB(30, 30, 30)
-                end)
-            end
-
-            function Groupbox:CreateDropdown(text, options, callback)
-                local Dropdown = Instance.new("TextButton")
-                Dropdown.Parent = ScrollingFrame
-                Dropdown.Text = text
-                Dropdown.Size = UDim2.new(1, -10, 0, 25)
-                Dropdown.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-                Dropdown.TextColor3 = Color3.fromRGB(255, 255, 255)
-                Dropdown.Font = Enum.Font.Gotham
-                Dropdown.TextSize = 14
-                Dropdown.BorderSizePixel = 0
-
-                local DropdownList = Instance.new("Frame")
-                DropdownList.Parent = Dropdown
-                DropdownList.Size = UDim2.new(1, 0, 0, #options * 25)
-                DropdownList.Position = UDim2.new(0, 0, 1, 0)
-                DropdownList.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-                DropdownList.Visible = false
-
-                for _, option in pairs(options) do
-                    local OptionButton = Instance.new("TextButton")
-                    OptionButton.Parent = DropdownList
-                    OptionButton.Text = option
-                    OptionButton.Size = UDim2.new(1, -10, 0, 25)
-                    OptionButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-                    OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-                    OptionButton.Font = Enum.Font.Gotham
-                    OptionButton.TextSize = 14
-                    OptionButton.BorderSizePixel = 0
-                    OptionButton.MouseButton1Click:Connect(function()
-                        callback(option)
-                        Dropdown.Text = text .. ": " .. option
-                        DropdownList.Visible = false
-                    end)
-                end
-
-                Dropdown.MouseButton1Click:Connect(function()
-                    DropdownList.Visible = not DropdownList.Visible
                 end)
             end
 
