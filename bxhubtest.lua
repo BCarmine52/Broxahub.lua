@@ -33,7 +33,7 @@ function Library:CreateWindow(title)
     MainFrameCorner.CornerRadius = UDim.new(0, 10)
     MainFrameCorner.Parent = MainFrame
 
-    -- Título centralizado
+    -- Título centralizado em negrito
     TitleLabel.Name = "TitleLabel"
     TitleLabel.Parent = MainFrame
     TitleLabel.BackgroundTransparency = 1
@@ -156,7 +156,7 @@ function Library:CreateWindow(title)
         TabButton.Name = name .. "Button"
         TabButton.Parent = TabBar
         TabButton.Text = name
-        TabButton.Font = Enum.Font.Gotham
+        TabButton.Font = Enum.Font.GothamBold
         TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
         TabButton.TextSize = 14
         TabButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
@@ -213,46 +213,6 @@ function Library:CreateWindow(title)
             UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
             UIListLayout.Padding = UDim.new(0, 5)
 
-            function Groupbox:CreateButton(text, callback)
-                local Button = Instance.new("TextButton")
-                Button.Parent = ScrollingFrame
-                Button.Text = text
-                Button.Size = UDim2.new(1, -10, 0, 25)
-                Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-                Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-                Button.Font = Enum.Font.Gotham
-                Button.TextSize = 14
-                Button.BorderSizePixel = 0
-                Button.MouseButton1Click:Connect(callback)
-
-                local ButtonCorner = Instance.new("UICorner")
-                ButtonCorner.CornerRadius = UDim.new(0, 5)
-                ButtonCorner.Parent = Button
-            end
-
-            function Groupbox:CreateToggle(text, callback)
-                local Toggle = Instance.new("TextButton")
-                Toggle.Parent = ScrollingFrame
-                Toggle.Text = text
-                Toggle.Size = UDim2.new(1, -10, 0, 25)
-                Toggle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-                Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
-                Toggle.Font = Enum.Font.Gotham
-                Toggle.TextSize = 14
-                Toggle.BorderSizePixel = 0
-                local isToggled = false
-
-                local ToggleCorner = Instance.new("UICorner")
-                ToggleCorner.CornerRadius = UDim.new(0, 5)
-                ToggleCorner.Parent = Toggle
-
-                Toggle.MouseButton1Click:Connect(function()
-                    isToggled = not isToggled
-                    callback(isToggled)
-                    Toggle.BackgroundColor3 = isToggled and Color3.fromRGB(50, 50, 50) or Color3.fromRGB(30, 30, 30)
-                end)
-            end
-
             function Groupbox:CreateToggleButton(text, callback)
                 local ToggleButtonFrame = Instance.new("Frame")
                 ToggleButtonFrame.Parent = ScrollingFrame
@@ -263,17 +223,18 @@ function Library:CreateWindow(title)
                 ToggleButtonLabel.Parent = ToggleButtonFrame
                 ToggleButtonLabel.Text = text
                 ToggleButtonLabel.Size = UDim2.new(0.8, 0, 1, 0)
+                ToggleButtonLabel.Position = UDim2.new(0.25, 0, 0, 0) -- move 4x para a direita
                 ToggleButtonLabel.BackgroundTransparency = 1
                 ToggleButtonLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-                ToggleButtonLabel.Font = Enum.Font.Gotham
+                ToggleButtonLabel.Font = Enum.Font.GothamBold -- Em negrito
                 ToggleButtonLabel.TextSize = 14
                 ToggleButtonLabel.TextXAlignment = Enum.TextXAlignment.Left
 
                 local Toggle = Instance.new("TextButton")
                 Toggle.Parent = ToggleButtonFrame
-                Toggle.Size = UDim2.new(0.15, 0, 0.8, 0)
+                Toggle.Size = UDim2.new(0, 20, 0, 20) -- Tamanho 20x20 pixels
                 Toggle.Position = UDim2.new(0.85, 0, 0.1, 0)
-                Toggle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+                Toggle.BackgroundColor3 = Color3.fromRGB(128, 128, 128) -- Cor cinza
                 Toggle.Text = ""
                 Toggle.BorderSizePixel = 0
 
@@ -285,7 +246,7 @@ function Library:CreateWindow(title)
                 Toggle.MouseButton1Click:Connect(function()
                     isToggled = not isToggled
                     callback(isToggled)
-                    Toggle.BackgroundColor3 = isToggled and Color3.fromRGB(50, 150, 50) or Color3.fromRGB(30, 30, 30)
+                    Toggle.BackgroundColor3 = isToggled and Color3.fromRGB(50, 150, 50) or Color3.fromRGB(128, 128, 128)
                 end)
             end
 
@@ -300,7 +261,6 @@ function Library:CreateWindow(title)
     -- Tab Auto Farm
     local AutoFarmTab = Window:CreateTab("Auto Farm")
     local AutoFarmGroupbox = AutoFarmTab:CreateGroupbox("Auto Farm Options")
-    AutoFarmGroupbox:CreateButton("Farm", function() print("Auto Farming started!") end)
     AutoFarmGroupbox:CreateToggleButton("Baby Farm", function(isActive)
         if isActive then
             print("Baby Farm ativado!")
