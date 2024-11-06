@@ -33,18 +33,18 @@ function Library:CreateWindow(title)
     MainFrameCorner.CornerRadius = UDim.new(0, 10)
     MainFrameCorner.Parent = MainFrame
 
-    -- Título
+    -- Título centralizado
     TitleLabel.Name = "TitleLabel"
     TitleLabel.Parent = MainFrame
     TitleLabel.BackgroundTransparency = 1
-    TitleLabel.Size = UDim2.new(1, -40, 0, 30)
+    TitleLabel.Size = UDim2.new(1, 0, 0, 30)
     TitleLabel.Font = Enum.Font.GothamBold
     TitleLabel.Text = title
     TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     TitleLabel.TextSize = 16
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Center
 
-    -- Botão de minimizar
+    -- Botão de minimizar ajustado para a esquerda
     local MinimizeButton = Instance.new("TextButton")
     MinimizeButton.Name = "MinimizeButton"
     MinimizeButton.Parent = MainFrame
@@ -53,7 +53,7 @@ function Library:CreateWindow(title)
     MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     MinimizeButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
-    MinimizeButton.Position = UDim2.new(0.92, 0, 0, 0)
+    MinimizeButton.Position = UDim2.new(0.87, 0, 0, 0) -- Movido ligeiramente para a esquerda
     MinimizeButton.BorderSizePixel = 0
 
     local MinimizeCorner = Instance.new("UICorner")
@@ -134,7 +134,7 @@ function Library:CreateWindow(title)
     TabContainer.Name = "TabContainer"
     TabContainer.Parent = MainFrame
     TabContainer.BackgroundTransparency = 1
-    TabContainer.Position = UDim2.new(0, 0, 0, 65)  -- Mover para baixo para dar mais espaço
+    TabContainer.Position = UDim2.new(0, 0, 0, 65) -- Ajustado para dar mais espaço entre as tabs e o conteúdo
     TabContainer.Size = UDim2.new(1, 0, 1, -65)
 
     -- Layout for Tabs
