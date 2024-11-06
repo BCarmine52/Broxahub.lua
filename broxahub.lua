@@ -1,236 +1,246 @@
 local Library = {}
 
-function Library:GetColor(color, table)
-    table = table or false
-    if (color.R == nil) then return Color3.fromRGB(19, 119, 255) end
-
-    local ColorRed = math.round(color.R * 255)
-    local ColorGreen = math.round(color.G * 255)
-    local ColorBlue = math.round(color.B * 255)
-
-    if (table) then
-        return {
-            Red = ColorRed,
-            Green = ColorGreen,
-            Blue = ColorBlue,
-        }
-    else
-        return Color3.fromRGB(ColorRed, ColorGreen, ColorBlue)
-    end
-end
-
-function Library:CreateWindow(title, color)
+function Library:CreateWindow(title)
     title = title or "HUD"
-    color = color and Library:GetColor(color) or Color3.fromRGB(34, 87, 122)
 
-    local WinTypes = {}
-    local BracketV2 = Instance.new("ScreenGui")
-    local core = Instance.new("Frame")
-    local titleLabel = Instance.new("TextLabel")
-    local tabbar = Instance.new("Frame")
-    local container = Instance.new("Frame")
+    local Window = {}
+    local GUI = Instance.new("ScreenGui")
+    local MainFrame = Instance.new("Frame")
+    local TitleLabel = Instance.new("TextLabel")
+    local TabBar = Instance.new("Frame")
+    local TabContainer = Instance.new("Frame")
+    local UIListLayout = Instance.new("UIListLayout")
 
-    BracketV2.Name = title
-    BracketV2.Parent = game.CoreGui
-    BracketV2.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    -- Screen GUI
+    GUI.Name = "CustomHUD"
+    GUI.Parent = game.CoreGui
+    GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-    core.Name = "core"
-    core.Parent = BracketV2
-    core.BackgroundColor3 = Color3.fromRGB(28, 28, 28)
-    core.BorderSizePixel = 0
-    core.Position = UDim2.new(0.2, 0, 0.2, 0)
-    core.Size = UDim2.new(0, 600, 0, 400)
-    core.BackgroundTransparency = 0.1
-    core.ClipsDescendants = true
-    core.AnchorPoint = Vector2.new(0.5, 0.5)
+    -- Main Frame
+    MainFrame.Name = "MainFrame"
+    MainFrame.Parent = GUI
+    MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+    MainFrame.BorderSizePixel = 0
+    MainFrame.Position = UDim2.new(0.3, 0, 0.2, 0)
+    MainFrame.Size = UDim2.new(0, 500, 0, 400)
+    MainFrame.BackgroundTransparency = 0.1
+    MainFrame.ClipsDescendants = true
+    MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 
-    titleLabel.Name = "titleLabel"
-    titleLabel.Parent = core
-    titleLabel.BackgroundTransparency = 1
-    titleLabel.Position = UDim2.new(0.02, 0, 0.01, 0)
-    titleLabel.Size = UDim2.new(0.96, 0, 0.1, 0)
-    titleLabel.Font = Enum.Font.GothamBold
-    titleLabel.Text = title
-    titleLabel.TextColor3 = color
-    titleLabel.TextSize = 18
-    titleLabel.TextXAlignment = Enum.TextXAlignment.Center
+    -- Title Label
+    TitleLabel.Name = "TitleLabel"
+    TitleLabel.Parent = MainFrame
+    TitleLabel.BackgroundTransparency = 1
+    TitleLabel.Position = UDim2.new(0, 0, 0, 0)
+    TitleLabel.Size = UDim2.new(0.8, 0, 0, 40)
+    TitleLabel.Font = Enum.Font.GothamBold
+    TitleLabel.Text = title
+    TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TitleLabel.TextSize = 20
+    TitleLabel.TextXAlignment = Enum.TextXAlignment.Center
 
-    tabbar.Name = "tabbar"
-    tabbar.Parent = core
-    tabbar.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
-    tabbar.BorderSizePixel = 0
-    tabbar.Position = UDim2.new(0, 0, 0.1, 0)
-    tabbar.Size = UDim2.new(1, 0, 0.1, 0)
-    tabbar.BackgroundTransparency = 0.2
+    -- Minimize and Unload Buttons
+    local MinimizeButton = Instance.new("TextButton")
+    MinimizeButton.Name = "MinimizeButton"
+    MinimizeButton.Parent = MainFrame
+    MinimizeButton.Text = "-"
+    MinimizeButton.Font = Enum.Font.GothamBold
+    MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    MinimizeButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    MinimizeButton.Size = UDim2.new(0, 40, 0, 40)
+    MinimizeButton.Position = UDim2.new(0.8, 0, 0, 0)
+    MinimizeButton.BorderSizePixel = 0
 
-    container.Name = "container"
-    container.Parent = core
-    container.BackgroundTransparency = 1
-    container.Position = UDim2.new(0, 0, 0.2, 0)
-    container.Size = UDim2.new(1, 0, 0.8, 0)
+    local UnloadButton = Instance.new("TextButton")
+    UnloadButton.Name = "UnloadButton"
+    UnloadButton.Parent = MainFrame
+    UnloadButton.Text = "X"
+    UnloadButton.Font = Enum.Font.GothamBold
+    UnloadButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    UnloadButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    UnloadButton.Size = UDim2.new(0, 40, 0, 40)
+    UnloadButton.Position = UDim2.new(0.88, 0, 0, 0)
+    UnloadButton.BorderSizePixel = 0
 
-    function WinTypes:CreateTab(name)
-        local TabTypes = {}
-        local tab = Instance.new("TextButton")
-        local Pattern = Instance.new("Frame")
-        local Left = Instance.new("Frame")
-        local Right = Instance.new("Frame")
+    -- Tab Bar
+    TabBar.Name = "TabBar"
+    TabBar.Parent = MainFrame
+    TabBar.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    TabBar.BorderSizePixel = 0
+    TabBar.Position = UDim2.new(0, 0, 0, 40)
+    TabBar.Size = UDim2.new(1, 0, 0, 30)
+    
+    -- Tab Container
+    TabContainer.Name = "TabContainer"
+    TabContainer.Parent = MainFrame
+    TabContainer.BackgroundTransparency = 1
+    TabContainer.Position = UDim2.new(0, 0, 0, 70)
+    TabContainer.Size = UDim2.new(1, 0, 1, -70)
 
-        tab.Name = "tab"
-        tab.Parent = tabbar
-        tab.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
-        tab.BorderSizePixel = 0
-        tab.Size = UDim2.new(0, tabbar.AbsoluteSize.X / (#tabbar:GetChildren() + 1), 0, 25)
-        tab.Font = Enum.Font.Gotham
-        tab.Text = name
-        tab.TextColor3 = Color3.fromRGB(255, 255, 255)
-        tab.TextSize = 14
+    -- Layout for Tabs
+    UIListLayout.Parent = TabBar
+    UIListLayout.FillDirection = Enum.FillDirection.Horizontal
+    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout.Padding = UDim.new(0, 5)
 
-        Pattern.Name = "container"
-        Pattern.Parent = container
-        Pattern.BackgroundTransparency = 1
-        Pattern.Size = UDim2.new(1, 0, 1, 0)
-        Pattern.Visible = false
+    -- Minimize and Unload functionality
+    local isMinimized = false
+    MinimizeButton.MouseButton1Click:Connect(function()
+        isMinimized = not isMinimized
+        TabContainer.Visible = not isMinimized
+        TabBar.Visible = not isMinimized
+        MainFrame.Size = isMinimized and UDim2.new(0, 500, 0, 40) or UDim2.new(0, 500, 0, 400)
+    end)
 
-        Left.Name = "Left"
-        Left.Parent = Pattern
-        Left.Size = UDim2.new(0.5, -5, 1, 0)
-        Left.BackgroundTransparency = 1
+    UnloadButton.MouseButton1Click:Connect(function()
+        GUI:Destroy()
+    end)
 
-        Right.Name = "Right"
-        Right.Parent = Pattern
-        Right.Position = UDim2.new(0.5, 5, 0, 0)
-        Right.Size = UDim2.new(0.5, -5, 1, 0)
-        Right.BackgroundTransparency = 1
+    function Window:CreateTab(name)
+        local Tab = {}
+        name = name or "Tab"
 
-        tab.MouseButton1Click:Connect(function()
-            Pattern.Visible = true
-            for _, otherTab in pairs(container:GetChildren()) do
-                if otherTab ~= Pattern then
-                    otherTab.Visible = false
-                end
+        -- Tab Button
+        local TabButton = Instance.new("TextButton")
+        TabButton.Name = name .. "Button"
+        TabButton.Parent = TabBar
+        TabButton.Text = name
+        TabButton.Font = Enum.Font.Gotham
+        TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        TabButton.TextSize = 14
+        TabButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+        TabButton.Size = UDim2.new(0, 100, 1, 0)
+        TabButton.BorderSizePixel = 0
+        TabButton.AutoButtonColor = false
+
+        -- Tab Content
+        local TabFrame = Instance.new("Frame")
+        TabFrame.Name = name .. "Content"
+        TabFrame.Parent = TabContainer
+        TabFrame.Size = UDim2.new(1, 0, 1, 0)
+        TabFrame.BackgroundTransparency = 1
+        TabFrame.Visible = false
+
+        TabButton.MouseButton1Click:Connect(function()
+            for _, tab in pairs(TabContainer:GetChildren()) do
+                tab.Visible = false
             end
+            TabFrame.Visible = true
         end)
 
-        if #tabbar:GetChildren() == 1 then
-            Pattern.Visible = true
+        if #TabContainer:GetChildren() == 1 then
+            TabFrame.Visible = true
         end
 
-        function TabTypes:CreateGroupbox(name, side)
-            local GroupTypes = {}
-            local groupbox = Instance.new("Frame")
-            local title = Instance.new("TextLabel")
-            local container = Instance.new("Frame")
+        function Tab:CreateGroupbox(name)
+            local Groupbox = {}
+            name = name or "Groupbox"
 
-            groupbox.Name = name
-            groupbox.Parent = side == "Right" and Right or Left
-            groupbox.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-            groupbox.BorderSizePixel = 0
-            groupbox.Size = UDim2.new(1, -10, 0, 150)
-            groupbox.Position = UDim2.new(0, 5, 0, 10)
-            groupbox.BackgroundTransparency = 0.1
+            local GroupboxFrame = Instance.new("Frame")
+            GroupboxFrame.Name = name
+            GroupboxFrame.Parent = TabFrame
+            GroupboxFrame.Size = UDim2.new(1, -10, 0, 150)
+            GroupboxFrame.Position = UDim2.new(0, 5, 0, 5)
+            GroupboxFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+            GroupboxFrame.BorderSizePixel = 0
 
-            title.Name = "title"
-            title.Parent = groupbox
-            title.Text = name
-            title.Size = UDim2.new(1, 0, 0, 20)
-            title.TextColor3 = Color3.fromRGB(255, 255, 255)
-            title.TextXAlignment = Enum.TextXAlignment.Left
-            title.Font = Enum.Font.GothamSemibold
-            title.BackgroundTransparency = 1
+            local GroupboxTitle = Instance.new("TextLabel")
+            GroupboxTitle.Parent = GroupboxFrame
+            GroupboxTitle.Text = name
+            GroupboxTitle.Size = UDim2.new(1, 0, 0, 25)
+            GroupboxTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+            GroupboxTitle.TextXAlignment = Enum.TextXAlignment.Left
+            GroupboxTitle.Font = Enum.Font.GothamBold
+            GroupboxTitle.BackgroundTransparency = 1
 
-            container.Name = "container"
-            container.Parent = groupbox
-            container.BackgroundTransparency = 1
-            container.Position = UDim2.new(0, 0, 0, 25)
-            container.Size = UDim2.new(1, 0, 1, -25)
+            local ContentFrame = Instance.new("Frame")
+            ContentFrame.Parent = GroupboxFrame
+            ContentFrame.Position = UDim2.new(0, 0, 0, 25)
+            ContentFrame.Size = UDim2.new(1, 0, 1, -25)
+            ContentFrame.BackgroundTransparency = 1
 
-            function GroupTypes:CreateButton(text, callback)
-                local button = Instance.new("TextButton")
-                button.Parent = container
-                button.Text = text
-                button.Size = UDim2.new(1, -10, 0, 30)
-                button.Position = UDim2.new(0, 5, 0, #container:GetChildren() * 35)
-                button.BackgroundColor3 = Color3.fromRGB(34, 87, 122)
-                button.TextColor3 = Color3.fromRGB(255, 255, 255)
-                button.Font = Enum.Font.Gotham
-                button.TextSize = 14
-                button.BorderSizePixel = 0
-
-                button.MouseButton1Click:Connect(callback)
+            function Groupbox:CreateButton(text, callback)
+                local Button = Instance.new("TextButton")
+                Button.Parent = ContentFrame
+                Button.Text = text
+                Button.Size = UDim2.new(1, -10, 0, 30)
+                Button.Position = UDim2.new(0, 5, 0, #ContentFrame:GetChildren() * 35)
+                Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+                Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+                Button.Font = Enum.Font.Gotham
+                Button.TextSize = 14
+                Button.BorderSizePixel = 0
+                Button.MouseButton1Click:Connect(callback)
             end
 
-            function GroupTypes:CreateToggle(text, callback)
-                local toggle = Instance.new("TextButton")
-                local isEnabled = false
-
-                toggle.Parent = container
-                toggle.Text = text
-                toggle.Size = UDim2.new(1, -10, 0, 30)
-                toggle.Position = UDim2.new(0, 5, 0, #container:GetChildren() * 35)
-                toggle.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-                toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
-                toggle.Font = Enum.Font.Gotham
-                toggle.TextSize = 14
-                toggle.BorderSizePixel = 0
-
-                toggle.MouseButton1Click:Connect(function()
-                    isEnabled = not isEnabled
-                    callback(isEnabled)
-                    toggle.BackgroundColor3 = isEnabled and Color3.fromRGB(19, 119, 255) or Color3.fromRGB(80, 80, 80)
+            function Groupbox:CreateToggle(text, callback)
+                local Toggle = Instance.new("TextButton")
+                Toggle.Parent = ContentFrame
+                Toggle.Text = text
+                Toggle.Size = UDim2.new(1, -10, 0, 30)
+                Toggle.Position = UDim2.new(0, 5, 0, #ContentFrame:GetChildren() * 35)
+                Toggle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+                Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+                Toggle.Font = Enum.Font.Gotham
+                Toggle.TextSize = 14
+                Toggle.BorderSizePixel = 0
+                local isToggled = false
+                Toggle.MouseButton1Click:Connect(function()
+                    isToggled = not isToggled
+                    callback(isToggled)
+                    Toggle.BackgroundColor3 = isToggled and Color3.fromRGB(50, 50, 50) or Color3.fromRGB(30, 30, 30)
                 end)
             end
 
-            function GroupTypes:CreateDropdown(text, options, callback)
-                local dropdown = Instance.new("TextButton")
-                dropdown.Parent = container
-                dropdown.Text = text
-                dropdown.Size = UDim2.new(1, -10, 0, 30)
-                dropdown.Position = UDim2.new(0, 5, 0, #container:GetChildren() * 35)
-                dropdown.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-                dropdown.TextColor3 = Color3.fromRGB(255, 255, 255)
-                dropdown.Font = Enum.Font.Gotham
-                dropdown.TextSize = 14
-                dropdown.BorderSizePixel = 0
+            function Groupbox:CreateDropdown(text, options, callback)
+                local Dropdown = Instance.new("TextButton")
+                Dropdown.Parent = ContentFrame
+                Dropdown.Text = text
+                Dropdown.Size = UDim2.new(1, -10, 0, 30)
+                Dropdown.Position = UDim2.new(0, 5, 0, #ContentFrame:GetChildren() * 35)
+                Dropdown.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+                Dropdown.TextColor3 = Color3.fromRGB(255, 255, 255)
+                Dropdown.Font = Enum.Font.Gotham
+                Dropdown.TextSize = 14
+                Dropdown.BorderSizePixel = 0
 
-                local list = Instance.new("Frame")
-                list.Parent = dropdown
-                list.Visible = false
-                list.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-                list.Position = UDim2.new(0, 0, 1, 0)
-                list.Size = UDim2.new(1, 0, 0, #options * 30)
+                local DropdownList = Instance.new("Frame")
+                DropdownList.Parent = Dropdown
+                DropdownList.Size = UDim2.new(1, 0, 0, #options * 30)
+                DropdownList.Position = UDim2.new(0, 0, 1, 0)
+                DropdownList.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+                DropdownList.Visible = false
 
                 for _, option in pairs(options) do
-                    local optionButton = Instance.new("TextButton")
-                    optionButton.Parent = list
-                    optionButton.Text = option
-                    optionButton.Size = UDim2.new(1, -10, 0, 30)
-                    optionButton.Position = UDim2.new(0, 5, 0, (#list:GetChildren() - 1) * 35)
-                    optionButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-                    optionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-                    optionButton.Font = Enum.Font.Gotham
-                    optionButton.TextSize = 14
-                    optionButton.BorderSizePixel = 0
-
-                    optionButton.MouseButton1Click:Connect(function()
+                    local OptionButton = Instance.new("TextButton")
+                    OptionButton.Parent = DropdownList
+                    OptionButton.Text = option
+                    OptionButton.Size = UDim2.new(1, -10, 0, 30)
+                    OptionButton.Position = UDim2.new(0, 5, 0, (#DropdownList:GetChildren() - 1) * 30)
+                    OptionButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+                    OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+                    OptionButton.Font = Enum.Font.Gotham
+                    OptionButton.TextSize = 14
+                    OptionButton.BorderSizePixel = 0
+                    OptionButton.MouseButton1Click:Connect(function()
                         callback(option)
-                        dropdown.Text = text .. ": " .. option
-                        list.Visible = false
+                        Dropdown.Text = text .. ": " .. option
+                        DropdownList.Visible = false
                     end)
                 end
 
-                dropdown.MouseButton1Click:Connect(function()
-                    list.Visible = not list.Visible
+                Dropdown.MouseButton1Click:Connect(function()
+                    DropdownList.Visible = not DropdownList.Visible
                 end)
             end
 
-            return GroupTypes
+            return Groupbox
         end
 
-        return TabTypes
+        return Tab
     end
 
-    return WinTypes, BracketV2
+    return Window
 end
 
 return Library
