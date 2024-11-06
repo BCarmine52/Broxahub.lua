@@ -10,10 +10,11 @@ function Library:CreateWindow(title)
     local TabBar = Instance.new("Frame")
     local TabContainer = Instance.new("Frame")
 
-    -- Screen GUI
+    -- Configuração da ScreenGui para dispositivos móveis
     GUI.Name = "CustomHUD"
     GUI.Parent = game.CoreGui
     GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    GUI.ResetOnSpawn = false
 
     -- Main Frame centralizado
     MainFrame.Name = "MainFrame"
@@ -21,21 +22,21 @@ function Library:CreateWindow(title)
     MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MainFrame.BorderSizePixel = 0
     MainFrame.Position = UDim2.new(0.5, -162, 0.5, -162)  -- Centraliza e permite movimento correto
-    MainFrame.Size = UDim2.new(0, 325, 0, 325)
+    MainFrame.Size = UDim2.new(0, 300, 0, 400)  -- Tamanho adequado para dispositivos móveis
+    MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
     MainFrame.BackgroundTransparency = 0
     MainFrame.ClipsDescendants = true
-    MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 
     -- Cantos arredondados para o MainFrame
     local MainFrameCorner = Instance.new("UICorner")
     MainFrameCorner.CornerRadius = UDim.new(0, 10)
     MainFrameCorner.Parent = MainFrame
 
-    -- Title Label
+    -- Título
     TitleLabel.Name = "TitleLabel"
     TitleLabel.Parent = MainFrame
     TitleLabel.BackgroundTransparency = 1
-    TitleLabel.Size = UDim2.new(1, 0, 0, 30)
+    TitleLabel.Size = UDim2.new(1, -40, 0, 30)
     TitleLabel.Font = Enum.Font.GothamBold
     TitleLabel.Text = title
     TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -51,14 +52,14 @@ function Library:CreateWindow(title)
     MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     MinimizeButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
-    MinimizeButton.Position = UDim2.new(0.88, 0, 0, 0)
+    MinimizeButton.Position = UDim2.new(0.92, 0, 0, 0)
     MinimizeButton.BorderSizePixel = 0
 
     local MinimizeCorner = Instance.new("UICorner")
     MinimizeCorner.CornerRadius = UDim.new(0, 5)
     MinimizeCorner.Parent = MinimizeButton
 
-    -- Minimização e Maximização
+    -- Minimização
     local isMinimized = false
     local MinimizeBox = Instance.new("TextButton")
 
@@ -90,13 +91,13 @@ function Library:CreateWindow(title)
         MinimizeBox.Visible = false
     end)
 
-    -- Arrastar funcionalidade
+    -- Arrastar para dispositivos móveis e desktop
     local dragging = false
     local dragStart
     local startPos
 
     MainFrame.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
             dragStart = input.Position
             startPos = MainFrame.Position
@@ -109,7 +110,7 @@ function Library:CreateWindow(title)
     end)
 
     MainFrame.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
             local delta = input.Position - dragStart
             MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
             MinimizeBox.Position = MainFrame.Position
