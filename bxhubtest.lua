@@ -22,11 +22,10 @@ function Library:CreateWindow(title)
     MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MainFrame.BorderSizePixel = 0
     MainFrame.Position = UDim2.fromScale(0.5, 0.5)
-    MainFrame.Size = UDim2.new(0, 310, 0, 0)
+    MainFrame.Size = UDim2.new(0, 310, 0, 400)
     MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
     MainFrame.BackgroundTransparency = 0
     MainFrame.ClipsDescendants = true
-    MainFrame:TweenSize(UDim2.new(0, 310, 0, 400), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.5, true)
 
     -- Cantos arredondados para o MainFrame
     local MainFrameCorner = Instance.new("UICorner")
@@ -200,22 +199,20 @@ function Library:CreateWindow(title)
         function Tab:CreateGroupbox()
             local Groupbox = {}
 
-            local ScrollingFrame = Instance.new("ScrollingFrame")
-            ScrollingFrame.Parent = TabFrame
-            ScrollingFrame.Position = UDim2.new(0, 0, 0, 0)
-            ScrollingFrame.Size = UDim2.new(1, 0, 1, 0)
-            ScrollingFrame.BackgroundTransparency = 1
-            ScrollingFrame.CanvasSize = UDim2.new(0, 0, 2, 0)
-            ScrollingFrame.ScrollBarThickness = 10
+            local Frame = Instance.new("Frame") -- Alterado de ScrollingFrame para Frame
+            Frame.Parent = TabFrame
+            Frame.Position = UDim2.new(0, 0, 0, 0)
+            Frame.Size = UDim2.new(1, 0, 1, 0)
+            Frame.BackgroundTransparency = 1
 
             local UIListLayout = Instance.new("UIListLayout")
-            UIListLayout.Parent = ScrollingFrame
+            UIListLayout.Parent = Frame
             UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
             UIListLayout.Padding = UDim.new(0, 5)
 
             function Groupbox:CreateToggleButton(text, callback)
                 local ToggleButtonFrame = Instance.new("Frame")
-                ToggleButtonFrame.Parent = ScrollingFrame
+                ToggleButtonFrame.Parent = Frame
                 ToggleButtonFrame.Size = UDim2.new(1, -10, 0, 25)
                 ToggleButtonFrame.BackgroundTransparency = 1
 
