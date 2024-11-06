@@ -96,6 +96,33 @@ function Library:CreateWindow(title)
         GUI:Destroy()
     end)
 
+    -- Dragging functionality
+    local dragging = false
+    local dragStart
+    local startPos
+
+    TitleLabel.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            dragStart = input.Position
+            startPos = MainFrame.Position
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+
+    TitleLabel.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            local delta = input.Position - dragStart
+            if dragging then
+                MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+            end
+        end
+    end)
+
     function Window:CreateTab(name)
         local Tab = {}
         name = name or "Tab"
