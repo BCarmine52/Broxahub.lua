@@ -68,7 +68,7 @@ function Library:CreateWindow(title)
     MinimizeBox.Parent = GUI
     MinimizeBox.Size = UDim2.new(0, 55, 0, 55)
     MinimizeBox.Position = MainFrame.Position
-    MinimizeBox.Text = "BX"
+    MinimizeBox.Text = "BH"
     MinimizeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
     MinimizeBox.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MinimizeBox.BorderSizePixel = 0
@@ -134,8 +134,8 @@ function Library:CreateWindow(title)
     TabContainer.Name = "TabContainer"
     TabContainer.Parent = MainFrame
     TabContainer.BackgroundTransparency = 1
-    TabContainer.Position = UDim2.new(0, 0, 0, 55)
-    TabContainer.Size = UDim2.new(1, 0, 1, -55)
+    TabContainer.Position = UDim2.new(0, 0, 0, 65)  -- Mover para baixo para dar mais espaço
+    TabContainer.Size = UDim2.new(1, 0, 1, -65)
 
     -- Layout for Tabs
     local TabListLayout = Instance.new("UIListLayout")
@@ -185,7 +185,7 @@ function Library:CreateWindow(title)
                     button.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
                 end
             end
-            TabButton.BackgroundColor3 = Color3.fromRGB(75, 150, 255) -- Define a cor de seleção
+            TabButton.BackgroundColor3 = Color3.fromRGB(75, 150, 255)
         end
 
         TabButton.MouseButton1Click:Connect(function()
