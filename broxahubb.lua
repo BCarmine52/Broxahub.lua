@@ -220,43 +220,40 @@ function Library:CreateWindow(title)
             UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
             UIListLayout.Padding = UDim.new(0, 5)
 
-            function Groupbox:CreateButton(text, callback)
-                local Button = Instance.new("TextButton")
-                Button.Parent = ScrollingFrame
-                Button.Text = text
-                Button.Size = UDim2.new(1, -10, 0, 25)
-                Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-                Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-                Button.Font = Enum.Font.Gotham
-                Button.TextSize = 14
-                Button.BorderSizePixel = 0
-                Button.MouseButton1Click:Connect(callback)
-
-                local ButtonCorner = Instance.new("UICorner")
-                ButtonCorner.CornerRadius = UDim.new(0, 5)
-                ButtonCorner.Parent = Button
-            end
-
+            -- Função de Toggle com design atualizado
             function Groupbox:CreateToggle(text, callback)
-                local Toggle = Instance.new("TextButton")
-                Toggle.Parent = ScrollingFrame
-                Toggle.Text = text
-                Toggle.Size = UDim2.new(1, -10, 0, 25)
-                Toggle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-                Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
-                Toggle.Font = Enum.Font.Gotham
-                Toggle.TextSize = 14
-                Toggle.BorderSizePixel = 0
+                local ToggleFrame = Instance.new("Frame")
+                ToggleFrame.Parent = ScrollingFrame
+                ToggleFrame.Size = UDim2.new(1, -10, 0, 25)
+                ToggleFrame.BackgroundTransparency = 1
+
+                local ToggleLabel = Instance.new("TextLabel")
+                ToggleLabel.Parent = ToggleFrame
+                ToggleLabel.Text = text
+                ToggleLabel.Size = UDim2.new(0.85, -10, 1, 0) -- Deixa espaço para a caixa à direita
+                ToggleLabel.Font = Enum.Font.Gotham
+                ToggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+                ToggleLabel.TextSize = 14
+                ToggleLabel.BackgroundTransparency = 1
+                ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+                local ToggleBox = Instance.new("TextButton")
+                ToggleBox.Parent = ToggleFrame
+                ToggleBox.Size = UDim2.new(0, 20, 0, 20) -- Tamanho da caixa quadrada
+                ToggleBox.Position = UDim2.new(0.9, 0, 0.5, -10) -- Alinhamento à direita
+                ToggleBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+                ToggleBox.BorderSizePixel = 0
+                ToggleBox.Text = ""
+                
+                local ToggleBoxCorner = Instance.new("UICorner")
+                ToggleBoxCorner.CornerRadius = UDim.new(0, 5)
+                ToggleBoxCorner.Parent = ToggleBox
+
                 local isToggled = false
-
-                local ToggleCorner = Instance.new("UICorner")
-                ToggleCorner.CornerRadius = UDim.new(0, 5)
-                ToggleCorner.Parent = Toggle
-
-                Toggle.MouseButton1Click:Connect(function()
+                ToggleBox.MouseButton1Click:Connect(function()
                     isToggled = not isToggled
                     callback(isToggled)
-                    Toggle.BackgroundColor3 = isToggled and Color3.fromRGB(50, 50, 50) or Color3.fromRGB(30, 30, 30)
+                    ToggleBox.BackgroundColor3 = isToggled and Color3.fromRGB(75, 150, 255) or Color3.fromRGB(30, 30, 30)
                 end)
             end
 
