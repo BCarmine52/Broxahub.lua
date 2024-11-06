@@ -91,9 +91,9 @@ function Library:CreateWindow(title)
 
     MinimizeBox.Name = "MinimizeBox"
     MinimizeBox.Parent = GUI
-    MinimizeBox.Size = UDim2.new(0, 100, 0, 30)
+    MinimizeBox.Size = UDim2.new(0, 55, 0, 55) -- Tamanho alterado para 55x55 pixels
     MinimizeBox.Position = MainFrame.Position
-    MinimizeBox.Text = "Open HUD"
+    MinimizeBox.Text = "BH" -- Texto alterado para "BH"
     MinimizeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
     MinimizeBox.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MinimizeBox.BorderSizePixel = 0
@@ -142,6 +142,11 @@ function Library:CreateWindow(title)
             MinimizeBox.Position = MainFrame.Position
         end
     end)
+
+    -- Função para descarregar a HUD
+    function Window:Unload()
+        GUI:Destroy()
+    end
 
     function Window:CreateTab(name)
         local Tab = {}
