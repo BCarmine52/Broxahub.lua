@@ -43,6 +43,80 @@ function Library:CreateWindow(title)
     TitleLabel.TextSize = 16
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Center
 
+    -- Botão de minimizar
+    local MinimizeButton = Instance.new("TextButton")
+    MinimizeButton.Name = "MinimizeButton"
+    MinimizeButton.Parent = MainFrame
+    MinimizeButton.Text = "-"
+    MinimizeButton.Font = Enum.Font.GothamBold
+    MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    MinimizeButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
+    MinimizeButton.Position = UDim2.new(0.88, 0, 0, 0)
+    MinimizeButton.BorderSizePixel = 0
+
+    local MinimizeCorner = Instance.new("UICorner")
+    MinimizeCorner.CornerRadius = UDim.new(0, 5)
+    MinimizeCorner.Parent = MinimizeButton
+
+    -- Variáveis de Minimizar
+    local isMinimized = false
+    local MinimizeBox = Instance.new("TextButton")
+
+    MinimizeBox.Name = "MinimizeBox"
+    MinimizeBox.Parent = GUI
+    MinimizeBox.Size = UDim2.new(0, 55, 0, 55)
+    MinimizeBox.Position = MainFrame.Position
+    MinimizeBox.Text = "BH"
+    MinimizeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    MinimizeBox.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+    MinimizeBox.BorderSizePixel = 0
+    MinimizeBox.Visible = false
+    MinimizeBox.Font = Enum.Font.GothamBold
+    MinimizeBox.TextSize = 14
+
+    local MinimizeBoxCorner = Instance.new("UICorner")
+    MinimizeBoxCorner.CornerRadius = UDim.new(0, 5)
+    MinimizeBoxCorner.Parent = MinimizeBox
+
+    MinimizeButton.MouseButton1Click:Connect(function()
+        isMinimized = not isMinimized
+        MainFrame.Visible = not isMinimized
+        MinimizeBox.Visible = isMinimized
+    end)
+
+    MinimizeBox.MouseButton1Click:Connect(function()
+        isMinimized = false
+        MainFrame.Visible = true
+        MinimizeBox.Visible = false
+    end)
+
+    -- Arrastar funcionalidade
+    local dragging = false
+    local dragStart
+    local startPos
+
+    TitleLabel.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            dragStart = input.Position
+            startPos = MainFrame.Position
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+
+    TitleLabel.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
+            local delta = input.Position - dragStart
+            MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+            MinimizeBox.Position = MainFrame.Position
+        end
+    end)
+
     -- Tab Bar
     TabBar.Name = "TabBar"
     TabBar.Parent = MainFrame
