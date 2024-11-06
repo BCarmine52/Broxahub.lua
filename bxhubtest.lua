@@ -223,18 +223,18 @@ function Library:CreateWindow(title)
                 ToggleButtonLabel.Parent = ToggleButtonFrame
                 ToggleButtonLabel.Text = text
                 ToggleButtonLabel.Size = UDim2.new(0.8, 0, 1, 0)
-                ToggleButtonLabel.Position = UDim2.new(0.25, 0, 0, 0) -- move 4x para a direita
+                ToggleButtonLabel.Position = UDim2.new(0.25, 0, 0, 0)
                 ToggleButtonLabel.BackgroundTransparency = 1
                 ToggleButtonLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-                ToggleButtonLabel.Font = Enum.Font.GothamBold -- Em negrito
+                ToggleButtonLabel.Font = Enum.Font.GothamBold
                 ToggleButtonLabel.TextSize = 14
                 ToggleButtonLabel.TextXAlignment = Enum.TextXAlignment.Left
 
                 local Toggle = Instance.new("TextButton")
                 Toggle.Parent = ToggleButtonFrame
-                Toggle.Size = UDim2.new(0, 20, 0, 20) -- Tamanho 20x20 pixels
+                Toggle.Size = UDim2.new(0, 20, 0, 20)
                 Toggle.Position = UDim2.new(0.85, 0, 0.1, 0)
-                Toggle.BackgroundColor3 = Color3.fromRGB(128, 128, 128) -- Cor cinza
+                Toggle.BackgroundColor3 = Color3.fromRGB(128, 128, 128)
                 Toggle.Text = ""
                 Toggle.BorderSizePixel = 0
 
