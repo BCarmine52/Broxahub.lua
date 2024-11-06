@@ -68,7 +68,7 @@ function Library:CreateWindow(title)
     MinimizeBox.Parent = GUI
     MinimizeBox.Size = UDim2.new(0, 55, 0, 55)
     MinimizeBox.Position = MainFrame.Position
-    MinimizeBox.Text = "BH"
+    MinimizeBox.Text = "BX"
     MinimizeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
     MinimizeBox.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MinimizeBox.BorderSizePixel = 0
