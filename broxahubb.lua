@@ -20,11 +20,11 @@ function Library:CreateWindow(title)
     MainFrame.Parent = GUI
     MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MainFrame.BorderSizePixel = 0
-    MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)  -- Centraliza na tela
-    MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)   -- Ponto de ancoragem centralizado
+    MainFrame.Position = UDim2.new(0.5, -162, 0.5, -162)  -- Centraliza e permite movimento correto
     MainFrame.Size = UDim2.new(0, 325, 0, 325)
     MainFrame.BackgroundTransparency = 0
     MainFrame.ClipsDescendants = true
+    MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 
     -- Cantos arredondados para o MainFrame
     local MainFrameCorner = Instance.new("UICorner")
@@ -35,7 +35,6 @@ function Library:CreateWindow(title)
     TitleLabel.Name = "TitleLabel"
     TitleLabel.Parent = MainFrame
     TitleLabel.BackgroundTransparency = 1
-    TitleLabel.Position = UDim2.new(0, 0, 0, 0)
     TitleLabel.Size = UDim2.new(1, 0, 0, 30)
     TitleLabel.Font = Enum.Font.GothamBold
     TitleLabel.Text = title
@@ -59,7 +58,7 @@ function Library:CreateWindow(title)
     MinimizeCorner.CornerRadius = UDim.new(0, 5)
     MinimizeCorner.Parent = MinimizeButton
 
-    -- Variáveis de Minimizar
+    -- Minimização e Maximização
     local isMinimized = false
     local MinimizeBox = Instance.new("TextButton")
 
@@ -96,7 +95,7 @@ function Library:CreateWindow(title)
     local dragStart
     local startPos
 
-    TitleLabel.InputBegan:Connect(function(input)
+    MainFrame.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             dragging = true
             dragStart = input.Position
@@ -109,7 +108,7 @@ function Library:CreateWindow(title)
         end
     end)
 
-    TitleLabel.InputChanged:Connect(function(input)
+    MainFrame.InputChanged:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
             local delta = input.Position - dragStart
             MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
