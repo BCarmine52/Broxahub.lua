@@ -159,7 +159,7 @@ function Library:CreateWindow(title)
         TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
         TabButton.TextSize = 14
         TabButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-        TabButton.Size = UDim2.new(0, 100, 1, 0)
+        TabButton.Size = UDim2.new(0, 85, 1, 0) -- Reduzi o tamanho das abas
         TabButton.BorderSizePixel = 0
         TabButton.AutoButtonColor = false
 
@@ -255,28 +255,24 @@ function Library:CreateWindow(title)
 
     -- Criando Tabs e Botões
 
-    -- Tab Auto Farm
-    local AutoFarmTab = Window:CreateTab("Auto Farm")
-    local AutoFarmGroupbox = AutoFarmTab:CreateGroupbox("Auto Farm Options")
-    AutoFarmGroupbox:CreateToggleButton("Baby Farm", function(isActive)
+    -- Tab Main (anteriormente Auto Farm)
+    local MainTab = Window:CreateTab("Main")
+    local MainGroupbox = MainTab:CreateGroupbox("Main Options")
+    MainGroupbox:CreateToggleButton("Baby Farm", function(isActive)
         if isActive then
             print("Baby Farm ativado!")
         else
             print("Baby Farm desativado!")
         end
     end)
+    MainGroupbox:CreateButton("Save Config", function() print("Configuration saved!") end)
+    MainGroupbox:CreateButton("Unload", function() Window:Unload() end)
 
     -- Tab Shop
     local ShopTab = Window:CreateTab("Shop")
     local ShopGroupbox = ShopTab:CreateGroupbox("Shop Options")
     ShopGroupbox:CreateButton("Open Shop", function() print("Shop opened!") end)
     ShopGroupbox:CreateToggle("Enable Item Buy", function(state) print("Item Buy toggled: " .. tostring(state)) end)
-
-    -- Tab Config
-    local ConfigTab = Window:CreateTab("Config")
-    local ConfigGroupbox = ConfigTab:CreateGroupbox("Configuration Options")
-    ConfigGroupbox:CreateButton("Save Config", function() print("Configuration saved!") end)
-    ConfigGroupbox:CreateButton("Unload", function() Window:Unload() end)
 
     return Window
 end
