@@ -16,16 +16,17 @@ function Library:CreateWindow(title)
     GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     GUI.ResetOnSpawn = false
 
-    -- Main Frame centralizado com animação de início e maior altura
+    -- Main Frame centralizado com animação de início
     MainFrame.Name = "MainFrame"
     MainFrame.Parent = GUI
     MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MainFrame.BorderSizePixel = 0
     MainFrame.Position = UDim2.fromScale(0.5, 0.5)
-    MainFrame.Size = UDim2.new(0, 400, 0, 500) -- Aumentei ainda mais a largura e a altura
+    MainFrame.Size = UDim2.new(0, 310, 0, 0)
     MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
     MainFrame.BackgroundTransparency = 0
     MainFrame.ClipsDescendants = true
+    MainFrame:TweenSize(UDim2.new(0, 310, 0, 400), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.5, true)
 
     -- Cantos arredondados para o MainFrame
     local MainFrameCorner = Instance.new("UICorner")
@@ -159,7 +160,7 @@ function Library:CreateWindow(title)
         TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
         TabButton.TextSize = 14
         TabButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-        TabButton.Size = UDim2.new(0, 85, 1, 0) -- Reduzi o tamanho das abas
+        TabButton.Size = UDim2.new(0, 100, 1, 0)
         TabButton.BorderSizePixel = 0
         TabButton.AutoButtonColor = false
 
@@ -199,20 +200,22 @@ function Library:CreateWindow(title)
         function Tab:CreateGroupbox()
             local Groupbox = {}
 
-            local Frame = Instance.new("Frame")
-            Frame.Parent = TabFrame
-            Frame.Position = UDim2.new(0, 0, 0, 0)
-            Frame.Size = UDim2.new(1, 0, 1, 0)
-            Frame.BackgroundTransparency = 1
+            local ScrollingFrame = Instance.new("ScrollingFrame")
+            ScrollingFrame.Parent = TabFrame
+            ScrollingFrame.Position = UDim2.new(0, 0, 0, 0)
+            ScrollingFrame.Size = UDim2.new(1, 0, 1, 0)
+            ScrollingFrame.BackgroundTransparency = 1
+            ScrollingFrame.CanvasSize = UDim2.new(0, 0, 2, 0)
+            ScrollingFrame.ScrollBarThickness = 10
 
             local UIListLayout = Instance.new("UIListLayout")
-            UIListLayout.Parent = Frame
+            UIListLayout.Parent = ScrollingFrame
             UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
             UIListLayout.Padding = UDim.new(0, 5)
 
             function Groupbox:CreateToggleButton(text, callback)
                 local ToggleButtonFrame = Instance.new("Frame")
-                ToggleButtonFrame.Parent = Frame
+                ToggleButtonFrame.Parent = ScrollingFrame
                 ToggleButtonFrame.Size = UDim2.new(1, -10, 0, 25)
                 ToggleButtonFrame.BackgroundTransparency = 1
 
@@ -255,24 +258,28 @@ function Library:CreateWindow(title)
 
     -- Criando Tabs e Botões
 
-    -- Tab Main (anteriormente Auto Farm)
-    local MainTab = Window:CreateTab("Main")
-    local MainGroupbox = MainTab:CreateGroupbox("Main Options")
-    MainGroupbox:CreateToggleButton("Baby Farm", function(isActive)
+    -- Tab Auto Farm
+    local AutoFarmTab = Window:CreateTab("Auto Farm")
+    local AutoFarmGroupbox = AutoFarmTab:CreateGroupbox("Auto Farm Options")
+    AutoFarmGroupbox:CreateToggleButton("Baby Farm", function(isActive)
         if isActive then
             print("Baby Farm ativado!")
         else
             print("Baby Farm desativado!")
         end
     end)
-    MainGroupbox:CreateButton("Save Config", function() print("Configuration saved!") end)
-    MainGroupbox:CreateButton("Unload", function() Window:Unload() end)
 
     -- Tab Shop
     local ShopTab = Window:CreateTab("Shop")
     local ShopGroupbox = ShopTab:CreateGroupbox("Shop Options")
     ShopGroupbox:CreateButton("Open Shop", function() print("Shop opened!") end)
     ShopGroupbox:CreateToggle("Enable Item Buy", function(state) print("Item Buy toggled: " .. tostring(state)) end)
+
+    -- Tab Config
+    local ConfigTab = Window:CreateTab("Config")
+    local ConfigGroupbox = ConfigTab:CreateGroupbox("Configuration Options")
+    ConfigGroupbox:CreateButton("Save Config", function() print("Configuration saved!") end)
+    ConfigGroupbox:CreateButton("Unload", function() Window:Unload() end)
 
     return Window
 end
