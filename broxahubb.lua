@@ -10,7 +10,7 @@ function Library:CreateWindow(title)
     local TabBar = Instance.new("Frame")
     local TabContainer = Instance.new("Frame")
 
-    -- Configuração da ScreenGui para dispositivos móveis e PC
+    -- Configuração da ScreenGui
     GUI.Name = "CustomHUD"
     GUI.Parent = game.CoreGui
     GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -21,13 +21,11 @@ function Library:CreateWindow(title)
     MainFrame.Parent = GUI
     MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MainFrame.BorderSizePixel = 0
-    MainFrame.Position = UDim2.fromScale(0.5, 0.5)  -- Centraliza a HUD no meio da tela
-    MainFrame.Size = UDim2.new(0, 310, 0, 0)  -- Começa com altura 0 para a animação
-    MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)  -- Garante centralização ao redor do ponto médio
+    MainFrame.Position = UDim2.fromScale(0.5, 0.5)
+    MainFrame.Size = UDim2.new(0, 310, 0, 0)
+    MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
     MainFrame.BackgroundTransparency = 0
     MainFrame.ClipsDescendants = true
-
-    -- Animação de início
     MainFrame:TweenSize(UDim2.new(0, 310, 0, 400), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.5, true)
 
     -- Cantos arredondados para o MainFrame
@@ -180,25 +178,29 @@ function Library:CreateWindow(title)
         TabFrame.BackgroundTransparency = 1
         TabFrame.Visible = false
 
-        TabButton.MouseButton1Click:Connect(function()
-            for _, tab in pairs(TabContainer:GetChildren()) do
-                tab.Visible = false
-            end
-            TabFrame.Visible = true
-
-            -- Animação de seleção de tab com mudança de cor
+        -- Função para atualizar a seleção da tab
+        local function updateTabSelection()
             for _, button in pairs(TabBar:GetChildren()) do
                 if button:IsA("TextButton") then
                     button.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
                 end
             end
+            TabButton.BackgroundColor3 = Color3.fromRGB(75, 150, 255) -- Define a cor de seleção
+        end
 
-            TabButton:TweenBackgroundColor3(Color3.fromRGB(75, 150, 255), "Out", "Quad", 0.3, true)
+        TabButton.MouseButton1Click:Connect(function()
+            -- Esconde todas as outras tabs
+            for _, tab in pairs(TabContainer:GetChildren()) do
+                tab.Visible = false
+            end
+            TabFrame.Visible = true
+            updateTabSelection()
         end)
 
+        -- Definir a primeira tab como ativa
         if #TabContainer:GetChildren() == 1 then
             TabFrame.Visible = true
-            TabButton.BackgroundColor3 = Color3.fromRGB(75, 150, 255)  -- Define a primeira tab como ativa
+            updateTabSelection()
         end
 
         function Tab:CreateGroupbox()
