@@ -152,7 +152,6 @@ function Library:CreateWindow(title)
         local Tab = {}
         name = name or "Tab"
 
-        -- Tab Button com animação de seleção
         local TabButton = Instance.new("TextButton")
         TabButton.Name = name .. "Button"
         TabButton.Parent = TabBar
@@ -295,6 +294,32 @@ function Library:CreateWindow(title)
 
         return Tab
     end
+
+    -- Criando Tabs e Botões
+
+    -- Tab Auto Farm
+    local AutoFarmTab = Window:CreateTab("Auto Farm")
+    local AutoFarmGroupbox = AutoFarmTab:CreateGroupbox("Auto Farm Options")
+    AutoFarmGroupbox:CreateButton("Farm", function() print("Auto Farming started!") end)
+    AutoFarmGroupbox:CreateToggleButton("Baby Farm", function(isActive)
+        if isActive then
+            print("Baby Farm ativado!")
+        else
+            print("Baby Farm desativado!")
+        end
+    end)
+
+    -- Tab Shop
+    local ShopTab = Window:CreateTab("Shop")
+    local ShopGroupbox = ShopTab:CreateGroupbox("Shop Options")
+    ShopGroupbox:CreateButton("Open Shop", function() print("Shop opened!") end)
+    ShopGroupbox:CreateToggle("Enable Item Buy", function(state) print("Item Buy toggled: " .. tostring(state)) end)
+
+    -- Tab Config
+    local ConfigTab = Window:CreateTab("Config")
+    local ConfigGroupbox = ConfigTab:CreateGroupbox("Configuration Options")
+    ConfigGroupbox:CreateButton("Save Config", function() print("Configuration saved!") end)
+    ConfigGroupbox:CreateButton("Unload", function() Window:Unload() end)
 
     return Window
 end
