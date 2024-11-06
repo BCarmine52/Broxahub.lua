@@ -192,7 +192,7 @@ function Library:CreateWindow(title)
             ScrollingFrame.Position = UDim2.new(0, 0, 0, 0)
             ScrollingFrame.Size = UDim2.new(1, 0, 1, 0)
             ScrollingFrame.BackgroundTransparency = 1
-            ScrollingFrame.CanvasSize = UDim2.new(0, 0, 2, 0)
+            ScrollingFrame.CanvasSize = UDim2.new(0, 0, 2, 0) -- Ajuste a altura conforme necessário
             ScrollingFrame.ScrollBarThickness = 10
 
             local UIListLayout = Instance.new("UIListLayout")
