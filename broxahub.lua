@@ -23,25 +23,13 @@ function Library:CreateWindow(title, color)
     title = title or "Bracket Lib V2"
     color = color and Library:GetColor(color) or Color3.fromRGB(19, 119, 255)
 
-    -- Variáveis da janela principal
     local WinTypes = {}
-    local WindowDragging, SliderDragging, ColorPickerDragging = false, false, false
-    local keybind = "RightControl"
-    local cancbind = false
-
-    -- Instâncias da janela
     local BracketV2 = Instance.new("ScreenGui")
     local core = Instance.new("Frame")
     local title_18 = Instance.new("TextLabel")
-    local outlinecore = Instance.new("Frame")
-    local inline = Instance.new("Frame")
-    local inlineoutline = Instance.new("Frame")
-    local inlinecore = Instance.new("Frame")
     local tabbar = Instance.new("Frame")
-    local UIListLayout = Instance.new("UIListLayout")
     local container = Instance.new("Frame")
 
-    -- Propriedades da janela
     BracketV2.Name = title
     BracketV2.Parent = game.CoreGui
     BracketV2.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -50,113 +38,172 @@ function Library:CreateWindow(title, color)
     core.Parent = BracketV2
     core.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
     core.BorderColor3 = Color3.fromRGB(8, 8, 8)
-    core.Position = UDim2.new(0.156000003, 0, 0.140000001, 0)
+    core.Position = UDim2.new(0.156, 0, 0.14, 0)
     core.Size = UDim2.new(0, 540, 0, 531)
 
-    outlinecore.Name = "outlinecore"
-    outlinecore.Parent = core
-    outlinecore.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    outlinecore.BorderSizePixel = 0
-    outlinecore.Position = UDim2.new(0, 1, 0, 1)
-    outlinecore.Size = UDim2.new(0, 538, 0, 529)
-
     title_18.Name = "title"
-    title_18.Parent = outlinecore
-    title_18.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    title_18.BackgroundTransparency = 1.000
-    title_18.Position = UDim2.new(0.0185185187, 0, 0.00188323914, 0)
+    title_18.Parent = core
+    title_18.BackgroundTransparency = 1
+    title_18.Position = UDim2.new(0.02, 0, 0.01, 0)
     title_18.Size = UDim2.new(0, 521, 0, 23)
     title_18.Font = Enum.Font.SourceSans
     title_18.Text = title
     title_18.TextColor3 = Color3.fromRGB(255, 255, 255)
-    title_18.TextSize = 18.000
-    title_18.TextStrokeTransparency = 0.000
+    title_18.TextSize = 18
     title_18.TextXAlignment = Enum.TextXAlignment.Left
 
-    inline.Name = "inline"
-    inline.Parent = outlinecore
-    inline.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
-    inline.BorderSizePixel = 0
-    inline.Position = UDim2.new(0, 7, 0, 23)
-    inline.Size = UDim2.new(0, 525, 0, 500)
-
-    inlineoutline.Name = "inlineoutline"
-    inlineoutline.Parent = inline
-    inlineoutline.BackgroundColor3 = Color3.fromRGB(8, 8, 8)
-    inlineoutline.BorderSizePixel = 0
-    inlineoutline.Position = UDim2.new(0, 1, 0, 1)
-    inlineoutline.Size = UDim2.new(0, 523, 0, 498)
-
-    inlinecore.Name = "inlinecore"
-    inlinecore.Parent = inlineoutline
-    inlinecore.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
-    inlinecore.BorderSizePixel = 0
-    inlinecore.Position = UDim2.new(0, 1, 0, 1)
-    inlinecore.Size = UDim2.new(0, 521, 0, 496)
-
     tabbar.Name = "tabbar"
-    tabbar.Parent = inlinecore
+    tabbar.Parent = core
     tabbar.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
     tabbar.BorderColor3 = Color3.fromRGB(8, 8, 8)
     tabbar.Size = UDim2.new(0, 521, 0, 25)
 
-    UIListLayout.Parent = tabbar
-    UIListLayout.FillDirection = Enum.FillDirection.Horizontal
-    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-
     container.Name = "container"
-    container.Parent = inlinecore
-    container.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    container.BackgroundTransparency = 1.000
-    container.BorderSizePixel = 0
-    container.Position = UDim2.new(0, 0, 0.0504032262, 0)
-    container.Size = UDim2.new(1, 0, 0.949596763, 0)
+    container.Parent = core
+    container.BackgroundTransparency = 1
+    container.Position = UDim2.new(0, 0, 0.05, 0)
+    container.Size = UDim2.new(1, 0, 0.95, 0)
 
-    -- Função para criar abas (tabs)
     function WinTypes:CreateTab(name)
-        name = name or "NewTab"
-
-        -- Instâncias para a aba
         local TabTypes = {}
         local tab = Instance.new("TextButton")
-        local title = Instance.new("TextLabel")
         local Pattern = Instance.new("Frame")
+        local Left = Instance.new("Frame")
+        local Right = Instance.new("Frame")
 
-        -- Propriedades da aba
         tab.Name = "tab"
         tab.Parent = tabbar
         tab.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
         tab.BorderSizePixel = 0
-        tab.Size = UDim2.new(0, tabbar.AbsoluteSize.X / (#tabbar:GetChildren()), 0, 25)
+        tab.Size = UDim2.new(0, tabbar.AbsoluteSize.X / (#tabbar:GetChildren() + 1), 0, 25)
         tab.Font = Enum.Font.SourceSans
-        tab.Text = ""
-        
-        title.Name = "title"
-        title.Parent = tab
-        title.Size = UDim2.new(1, 0, 1, 0)
-        title.Font = Enum.Font.SourceSans
-        title.Text = name
-        title.TextColor3 = Color3.fromRGB(255, 255, 255)
-        title.TextSize = 18.000
-        
+        tab.Text = name
+        tab.TextColor3 = Color3.fromRGB(255, 255, 255)
+        tab.TextSize = 18
+
         Pattern.Name = "container"
         Pattern.Parent = container
-        Pattern.Size = UDim2.new(1, 0, 1, -25)
+        Pattern.BackgroundTransparency = 1
+        Pattern.Size = UDim2.new(1, 0, 1, 0)
         Pattern.Visible = false
 
-        -- Função de clique da aba
+        Left.Name = "Left"
+        Left.Parent = Pattern
+        Left.Size = UDim2.new(0.5, -5, 1, 0)
+        Left.BackgroundTransparency = 1
+
+        Right.Name = "Right"
+        Right.Parent = Pattern
+        Right.Position = UDim2.new(0.5, 5, 0, 0)
+        Right.Size = UDim2.new(0.5, -5, 1, 0)
+        Right.BackgroundTransparency = 1
+
         tab.MouseButton1Click:Connect(function()
             Pattern.Visible = true
             for _, otherTab in pairs(container:GetChildren()) do
-                if otherTab:IsA("Frame") and otherTab ~= Pattern then
+                if otherTab ~= Pattern then
                     otherTab.Visible = false
                 end
             end
         end)
 
-        -- Definindo como a primeira aba visível
         if #tabbar:GetChildren() == 1 then
             Pattern.Visible = true
+        end
+
+        function TabTypes:CreateGroupbox(name, side)
+            local GroupTypes = {}
+            local groupbox = Instance.new("Frame")
+            local title = Instance.new("TextLabel")
+            local container = Instance.new("Frame")
+
+            groupbox.Name = name
+            groupbox.Parent = side == "Right" and Right or Left
+            groupbox.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+            groupbox.Size = UDim2.new(1, 0, 0, 100)
+            
+            title.Name = "title"
+            title.Parent = groupbox
+            title.Text = name
+            title.Size = UDim2.new(1, 0, 0, 20)
+            title.TextColor3 = Color3.fromRGB(255, 255, 255)
+            title.TextXAlignment = Enum.TextXAlignment.Left
+            title.BackgroundTransparency = 1
+
+            container.Name = "container"
+            container.Parent = groupbox
+            container.BackgroundTransparency = 1
+            container.Position = UDim2.new(0, 0, 0, 20)
+            container.Size = UDim2.new(1, 0, 1, -20)
+
+            function GroupTypes:CreateButton(text, callback)
+                local button = Instance.new("TextButton")
+                button.Parent = container
+                button.Text = text
+                button.Size = UDim2.new(1, -10, 0, 30)
+                button.Position = UDim2.new(0, 5, 0, #container:GetChildren() * 35)
+                button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+                button.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+                button.MouseButton1Click:Connect(callback)
+            end
+
+            function GroupTypes:CreateToggle(text, callback)
+                local toggle = Instance.new("TextButton")
+                local isEnabled = false
+
+                toggle.Parent = container
+                toggle.Text = text
+                toggle.Size = UDim2.new(1, -10, 0, 30)
+                toggle.Position = UDim2.new(0, 5, 0, #container:GetChildren() * 35)
+                toggle.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+                toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+                toggle.MouseButton1Click:Connect(function()
+                    isEnabled = not isEnabled
+                    callback(isEnabled)
+                    toggle.BackgroundColor3 = isEnabled and Color3.fromRGB(19, 119, 255) or Color3.fromRGB(80, 80, 80)
+                end)
+            end
+
+            function GroupTypes:CreateDropdown(text, options, callback)
+                local dropdown = Instance.new("TextButton")
+                dropdown.Parent = container
+                dropdown.Text = text
+                dropdown.Size = UDim2.new(1, -10, 0, 30)
+                dropdown.Position = UDim2.new(0, 5, 0, #container:GetChildren() * 35)
+                dropdown.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+                dropdown.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+                local list = Instance.new("Frame")
+                list.Parent = dropdown
+                list.Visible = false
+                list.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+                list.Position = UDim2.new(0, 0, 1, 0)
+                list.Size = UDim2.new(1, 0, 0, #options * 30)
+
+                for _, option in pairs(options) do
+                    local optionButton = Instance.new("TextButton")
+                    optionButton.Parent = list
+                    optionButton.Text = option
+                    optionButton.Size = UDim2.new(1, -10, 0, 30)
+                    optionButton.Position = UDim2.new(0, 5, 0, (#list:GetChildren() - 1) * 35)
+                    optionButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+                    optionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+                    optionButton.MouseButton1Click:Connect(function()
+                        callback(option)
+                        dropdown.Text = text .. ": " .. option
+                        list.Visible = false
+                    end)
+                end
+
+                dropdown.MouseButton1Click:Connect(function()
+                    list.Visible = not list.Visible
+                end)
+            end
+
+            return GroupTypes
         end
 
         return TabTypes
