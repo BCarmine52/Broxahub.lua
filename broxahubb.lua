@@ -43,7 +43,7 @@ function Library:CreateWindow(title)
     TitleLabel.TextSize = 16
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Center
 
-    -- Minimize and Unload Buttons
+    -- Minimize Button
     local MinimizeButton = Instance.new("TextButton")
     MinimizeButton.Name = "MinimizeButton"
     MinimizeButton.Parent = MainFrame
@@ -52,27 +52,12 @@ function Library:CreateWindow(title)
     MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     MinimizeButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
-    MinimizeButton.Position = UDim2.new(0.8, 0, 0, 0)
+    MinimizeButton.Position = UDim2.new(0.88, 0, 0, 0)
     MinimizeButton.BorderSizePixel = 0
 
     local MinimizeCorner = Instance.new("UICorner")
     MinimizeCorner.CornerRadius = UDim.new(0, 5)
     MinimizeCorner.Parent = MinimizeButton
-
-    local UnloadButton = Instance.new("TextButton")
-    UnloadButton.Name = "UnloadButton"
-    UnloadButton.Parent = MainFrame
-    UnloadButton.Text = "X"
-    UnloadButton.Font = Enum.Font.GothamBold
-    UnloadButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    UnloadButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    UnloadButton.Size = UDim2.new(0, 30, 0, 30)
-    UnloadButton.Position = UDim2.new(0.88, 0, 0, 0)
-    UnloadButton.BorderSizePixel = 0
-
-    local UnloadCorner = Instance.new("UICorner")
-    UnloadCorner.CornerRadius = UDim.new(0, 5)
-    UnloadCorner.Parent = UnloadButton
 
     -- Tab Bar
     TabBar.Name = "TabBar"
@@ -100,7 +85,7 @@ function Library:CreateWindow(title)
     TabListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     TabListLayout.Padding = UDim.new(0, 5)
 
-    -- Minimize and Unload functionality
+    -- Minimize functionality
     local isMinimized = false
     local MinimizeBox = Instance.new("TextButton")
 
@@ -124,10 +109,6 @@ function Library:CreateWindow(title)
         isMinimized = not isMinimized
         MainFrame.Visible = not isMinimized
         MinimizeBox.Visible = isMinimized
-    end)
-
-    UnloadButton.MouseButton1Click:Connect(function()
-        GUI:Destroy()
     end)
 
     MinimizeBox.MouseButton1Click:Connect(function()
@@ -211,7 +192,7 @@ function Library:CreateWindow(title)
             ScrollingFrame.Position = UDim2.new(0, 0, 0, 0)
             ScrollingFrame.Size = UDim2.new(1, 0, 1, 0)
             ScrollingFrame.BackgroundTransparency = 1
-            ScrollingFrame.CanvasSize = UDim2.new(0, 0, 2, 0) -- Ajuste a altura conforme necessário
+            ScrollingFrame.CanvasSize = UDim2.new(0, 0, 2, 0)
             ScrollingFrame.ScrollBarThickness = 10
 
             local UIListLayout = Instance.new("UIListLayout")
@@ -231,7 +212,6 @@ function Library:CreateWindow(title)
                 Button.BorderSizePixel = 0
                 Button.MouseButton1Click:Connect(callback)
 
-                -- Botão com cantos arredondados
                 local ButtonCorner = Instance.new("UICorner")
                 ButtonCorner.CornerRadius = UDim.new(0, 5)
                 ButtonCorner.Parent = Button
@@ -249,7 +229,6 @@ function Library:CreateWindow(title)
                 Toggle.BorderSizePixel = 0
                 local isToggled = false
 
-                -- Cantos arredondados para o Toggle
                 local ToggleCorner = Instance.new("UICorner")
                 ToggleCorner.CornerRadius = UDim.new(0, 5)
                 ToggleCorner.Parent = Toggle
