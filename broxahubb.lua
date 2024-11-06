@@ -15,17 +15,17 @@ function Library:CreateWindow(title)
     GUI.Parent = game.CoreGui
     GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-    -- Main Frame com tamanho de 325x325 pixels e sem transparência
+    -- Main Frame centralizado
     MainFrame.Name = "MainFrame"
     MainFrame.Parent = GUI
     MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MainFrame.BorderSizePixel = 0
-    MainFrame.Position = UDim2.new(0.3, 0, 0.2, 0)
+    MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)  -- Centraliza na tela
+    MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)   -- Ponto de ancoragem centralizado
     MainFrame.Size = UDim2.new(0, 325, 0, 325)
-    MainFrame.BackgroundTransparency = 0 -- Remover transparência
+    MainFrame.BackgroundTransparency = 0
     MainFrame.ClipsDescendants = true
-    MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-    
+
     -- Cantos arredondados para o MainFrame
     local MainFrameCorner = Instance.new("UICorner")
     MainFrameCorner.CornerRadius = UDim.new(0, 10)
@@ -36,28 +36,12 @@ function Library:CreateWindow(title)
     TitleLabel.Parent = MainFrame
     TitleLabel.BackgroundTransparency = 1
     TitleLabel.Position = UDim2.new(0, 0, 0, 0)
-    TitleLabel.Size = UDim2.new(1, 0, 0, 30) -- Ajustar para ocupar toda a largura
+    TitleLabel.Size = UDim2.new(1, 0, 0, 30)
     TitleLabel.Font = Enum.Font.GothamBold
     TitleLabel.Text = title
     TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     TitleLabel.TextSize = 16
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Center
-
-    -- Minimize Button
-    local MinimizeButton = Instance.new("TextButton")
-    MinimizeButton.Name = "MinimizeButton"
-    MinimizeButton.Parent = MainFrame
-    MinimizeButton.Text = "-"
-    MinimizeButton.Font = Enum.Font.GothamBold
-    MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    MinimizeButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
-    MinimizeButton.Position = UDim2.new(0.88, 0, 0, 0)
-    MinimizeButton.BorderSizePixel = 0
-
-    local MinimizeCorner = Instance.new("UICorner")
-    MinimizeCorner.CornerRadius = UDim.new(0, 5)
-    MinimizeCorner.Parent = MinimizeButton
 
     -- Tab Bar
     TabBar.Name = "TabBar"
@@ -85,67 +69,9 @@ function Library:CreateWindow(title)
     TabListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     TabListLayout.Padding = UDim.new(0, 5)
 
-    -- Minimize functionality
-    local isMinimized = false
-    local MinimizeBox = Instance.new("TextButton")
-
-    MinimizeBox.Name = "MinimizeBox"
-    MinimizeBox.Parent = GUI
-    MinimizeBox.Size = UDim2.new(0, 55, 0, 55) -- Tamanho alterado para 55x55 pixels
-    MinimizeBox.Position = MainFrame.Position
-    MinimizeBox.Text = "BH" -- Texto alterado para "BH"
-    MinimizeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    MinimizeBox.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-    MinimizeBox.BorderSizePixel = 0
-    MinimizeBox.Visible = false
-    MinimizeBox.Font = Enum.Font.GothamBold
-    MinimizeBox.TextSize = 14
-
-    local MinimizeBoxCorner = Instance.new("UICorner")
-    MinimizeBoxCorner.CornerRadius = UDim.new(0, 5)
-    MinimizeBoxCorner.Parent = MinimizeBox
-
-    MinimizeButton.MouseButton1Click:Connect(function()
-        isMinimized = not isMinimized
-        MainFrame.Visible = not isMinimized
-        MinimizeBox.Visible = isMinimized
-    end)
-
-    MinimizeBox.MouseButton1Click:Connect(function()
-        isMinimized = false
-        MainFrame.Visible = true
-        MinimizeBox.Visible = false
-    end)
-
-    -- Dragging functionality for MainFrame
-    local dragging = false
-    local dragStart
-    local startPos
-
-    TitleLabel.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = true
-            dragStart = input.Position
-            startPos = MainFrame.Position
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    dragging = false
-                end
-            end)
-        end
-    end)
-
-    TitleLabel.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
-            local delta = input.Position - dragStart
-            MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-            MinimizeBox.Position = MainFrame.Position
-        end
-    end)
-
     -- Função para descarregar a HUD
     function Window:Unload()
-        GUI:Destroy() -- Destrói a HUD e remove da tela
+        GUI:Destroy()
     end
 
     function Window:CreateTab(name)
@@ -197,7 +123,7 @@ function Library:CreateWindow(title)
             ScrollingFrame.Position = UDim2.new(0, 0, 0, 0)
             ScrollingFrame.Size = UDim2.new(1, 0, 1, 0)
             ScrollingFrame.BackgroundTransparency = 1
-            ScrollingFrame.CanvasSize = UDim2.new(0, 0, 2, 0) -- Ajuste a altura conforme necessário
+            ScrollingFrame.CanvasSize = UDim2.new(0, 0, 2, 0)
             ScrollingFrame.ScrollBarThickness = 10
 
             local UIListLayout = Instance.new("UIListLayout")
