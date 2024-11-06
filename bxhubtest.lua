@@ -16,13 +16,13 @@ function Library:CreateWindow(title)
     GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     GUI.ResetOnSpawn = false
 
-    -- Main Frame centralizado com animação de início
+    -- Main Frame centralizado com animação de início e maior altura
     MainFrame.Name = "MainFrame"
     MainFrame.Parent = GUI
     MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MainFrame.BorderSizePixel = 0
     MainFrame.Position = UDim2.fromScale(0.5, 0.5)
-    MainFrame.Size = UDim2.new(0, 310, 0, 400)
+    MainFrame.Size = UDim2.new(0, 350, 0, 450) -- Aumentei a largura e a altura
     MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
     MainFrame.BackgroundTransparency = 0
     MainFrame.ClipsDescendants = true
@@ -199,7 +199,7 @@ function Library:CreateWindow(title)
         function Tab:CreateGroupbox()
             local Groupbox = {}
 
-            local Frame = Instance.new("Frame") -- Alterado de ScrollingFrame para Frame
+            local Frame = Instance.new("Frame")
             Frame.Parent = TabFrame
             Frame.Position = UDim2.new(0, 0, 0, 0)
             Frame.Size = UDim2.new(1, 0, 1, 0)
