@@ -22,7 +22,7 @@ function Library:CreateWindow(title)
     MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MainFrame.BorderSizePixel = 0
     MainFrame.Position = UDim2.new(0.3, 0, 0.2, 0)
-    MainFrame.Size = UDim2.new(0, 350, 0, 250)  -- Tamanho da HUD
+    MainFrame.Size = UDim2.new(0, 350, 0, 250)
     MainFrame.BackgroundTransparency = 0.1
     MainFrame.ClipsDescendants = true
     MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -81,7 +81,7 @@ function Library:CreateWindow(title)
     UIListLayout.Parent = TabBar
     UIListLayout.FillDirection = Enum.FillDirection.Horizontal
     UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    UIListLayout.Padding = UDim.new(0, 5)
+    UIListLayout.Padding = UDim.new(0, 0)  -- Remove padding para compactar
 
     -- Minimize and Unload functionality
     local isMinimized = false
@@ -109,7 +109,6 @@ function Library:CreateWindow(title)
         GUI:Destroy()
     end)
 
-    -- Functionality to restore HUD from MinimizeBox
     MinimizeBox.MouseButton1Click:Connect(function()
         isMinimized = false
         MainFrame.Visible = true
@@ -201,28 +200,19 @@ function Library:CreateWindow(title)
 
         function Tab:CreateGroupbox(name)
             local Groupbox = {}
-            name = name or "Groupbox"
+            name = name or ""
 
             local GroupboxFrame = Instance.new("Frame")
             GroupboxFrame.Name = name
             GroupboxFrame.Parent = TabFrame
             GroupboxFrame.Size = UDim2.new(1, -10, 0, 100)
-            GroupboxFrame.Position = UDim2.new(0, 5, 0, 5)
+            GroupboxFrame.Position = UDim2.new(0, 5, 0, 0) -- Removendo espaçamento extra
             GroupboxFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
             GroupboxFrame.BorderSizePixel = 0
 
-            local GroupboxTitle = Instance.new("TextLabel")
-            GroupboxTitle.Parent = GroupboxFrame
-            GroupboxTitle.Text = name
-            GroupboxTitle.Size = UDim2.new(1, 0, 0, 20)
-            GroupboxTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-            GroupboxTitle.TextXAlignment = Enum.TextXAlignment.Left
-            GroupboxTitle.Font = Enum.Font.GothamBold
-            GroupboxTitle.BackgroundTransparency = 1
-
             local ContentFrame = Instance.new("Frame")
             ContentFrame.Parent = GroupboxFrame
-            ContentFrame.Position = UDim2.new(0, 0, 0, 20)
+            ContentFrame.Position = UDim2.new(0, 0, 0, 0)
             ContentFrame.Size = UDim2.new(1, 0, 1, -20)
             ContentFrame.BackgroundTransparency = 1
 
