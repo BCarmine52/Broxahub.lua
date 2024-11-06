@@ -10,7 +10,7 @@ function Library:CreateWindow(title)
     local TabBar = Instance.new("Frame")
     local TabContainer = Instance.new("Frame")
 
-    -- Configuração da ScreenGui para dispositivos móveis
+    -- Configuração da ScreenGui para dispositivos móveis e PC
     GUI.Name = "CustomHUD"
     GUI.Parent = game.CoreGui
     GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -21,9 +21,9 @@ function Library:CreateWindow(title)
     MainFrame.Parent = GUI
     MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MainFrame.BorderSizePixel = 0
-    MainFrame.Position = UDim2.new(0.5, -162, 0.5, -162)  -- Centraliza e permite movimento correto
-    MainFrame.Size = UDim2.new(0, 300, 0, 400)  -- Tamanho adequado para dispositivos móveis
-    MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+    MainFrame.Position = UDim2.fromScale(0.5, 0.5)  -- Centraliza a HUD no meio da tela
+    MainFrame.Size = UDim2.new(0, 300, 0, 400)  -- Tamanho adequado para dispositivos móveis e desktop
+    MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)  -- Garante centralização ao redor do ponto médio
     MainFrame.BackgroundTransparency = 0
     MainFrame.ClipsDescendants = true
 
