@@ -145,7 +145,7 @@ function Library:CreateWindow(title)
 
     -- Função para descarregar a HUD
     function Window:Unload()
-        GUI:Destroy()
+        GUI:Destroy() -- Destrói a HUD e remove da tela
     end
 
     function Window:CreateTab(name)
