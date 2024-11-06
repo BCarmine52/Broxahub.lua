@@ -38,6 +38,29 @@ function Library:CreateWindow(title)
     TitleLabel.TextSize = 16
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Center
 
+    -- Minimize and Unload Buttons
+    local MinimizeButton = Instance.new("TextButton")
+    MinimizeButton.Name = "MinimizeButton"
+    MinimizeButton.Parent = MainFrame
+    MinimizeButton.Text = "-"
+    MinimizeButton.Font = Enum.Font.GothamBold
+    MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    MinimizeButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
+    MinimizeButton.Position = UDim2.new(0.8, 0, 0, 0)
+    MinimizeButton.BorderSizePixel = 0
+
+    local UnloadButton = Instance.new("TextButton")
+    UnloadButton.Name = "UnloadButton"
+    UnloadButton.Parent = MainFrame
+    UnloadButton.Text = "X"
+    UnloadButton.Font = Enum.Font.GothamBold
+    UnloadButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    UnloadButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    UnloadButton.Size = UDim2.new(0, 30, 0, 30)
+    UnloadButton.Position = UDim2.new(0.88, 0, 0, 0)
+    UnloadButton.BorderSizePixel = 0
+
     -- Tab Bar
     TabBar.Name = "TabBar"
     TabBar.Parent = MainFrame
@@ -59,6 +82,64 @@ function Library:CreateWindow(title)
     TabListLayout.FillDirection = Enum.FillDirection.Horizontal
     TabListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     TabListLayout.Padding = UDim.new(0, 5)
+
+    -- Minimize and Unload functionality
+    local isMinimized = false
+    local MinimizeBox = Instance.new("TextButton")
+
+    MinimizeBox.Name = "MinimizeBox"
+    MinimizeBox.Parent = GUI
+    MinimizeBox.Size = UDim2.new(0, 100, 0, 30)
+    MinimizeBox.Position = MainFrame.Position
+    MinimizeBox.Text = "Open HUD"
+    MinimizeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    MinimizeBox.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+    MinimizeBox.BorderSizePixel = 0
+    MinimizeBox.Visible = false
+    MinimizeBox.Font = Enum.Font.GothamBold
+    MinimizeBox.TextSize = 14
+
+    MinimizeButton.MouseButton1Click:Connect(function()
+        isMinimized = not isMinimized
+        MainFrame.Visible = not isMinimized
+        MinimizeBox.Visible = isMinimized
+    end)
+
+    UnloadButton.MouseButton1Click:Connect(function()
+        GUI:Destroy()
+    end)
+
+    MinimizeBox.MouseButton1Click:Connect(function()
+        isMinimized = false
+        MainFrame.Visible = true
+        MinimizeBox.Visible = false
+    end)
+
+    -- Dragging functionality for MainFrame
+    local dragging = false
+    local dragStart
+    local startPos
+
+    TitleLabel.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            dragStart = input.Position
+            startPos = MainFrame.Position
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+
+    TitleLabel.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
+            local delta = input.Position - dragStart
+            MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+            MinimizeBox.Position = MainFrame.Position
+        end
+    end)
 
     function Window:CreateTab(name)
         local Tab = {}
@@ -101,16 +182,16 @@ function Library:CreateWindow(title)
 
             local ContentFrame = Instance.new("Frame")
             ContentFrame.Parent = TabFrame
-            ContentFrame.Position = UDim2.new(0, 0, 0, 0)  -- Remove padding
-            ContentFrame.Size = UDim2.new(1, 0, 1, 0)       -- Full size under tabs
+            ContentFrame.Position = UDim2.new(0, 0, 0, 0)
+            ContentFrame.Size = UDim2.new(1, 0, 1, 0)
             ContentFrame.BackgroundTransparency = 1
 
             function Groupbox:CreateButton(text, callback)
                 local Button = Instance.new("TextButton")
                 Button.Parent = ContentFrame
                 Button.Text = text
-                Button.Size = UDim2.new(1, -10, 0, 25)   -- Tamanho ajustado para reduzir o espaço
-                Button.Position = UDim2.new(0, 5, 0, #ContentFrame:GetChildren() * 30)  -- Espaçamento mínimo entre botões
+                Button.Size = UDim2.new(1, -10, 0, 25)
+                Button.Position = UDim2.new(0, 5, 0, #ContentFrame:GetChildren() * 30)
                 Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
                 Button.TextColor3 = Color3.fromRGB(255, 255, 255)
                 Button.Font = Enum.Font.Gotham
