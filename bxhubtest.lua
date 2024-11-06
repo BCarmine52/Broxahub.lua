@@ -22,7 +22,7 @@ function Library:CreateWindow(title)
     MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MainFrame.BorderSizePixel = 0
     MainFrame.Position = UDim2.fromScale(0.5, 0.5)
-    MainFrame.Size = UDim2.new(0, 350, 0, 450) -- Aumentei a largura e a altura
+    MainFrame.Size = UDim2.new(0, 400, 0, 500) -- Aumentei ainda mais a largura e a altura
     MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
     MainFrame.BackgroundTransparency = 0
     MainFrame.ClipsDescendants = true
