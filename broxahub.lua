@@ -1,4 +1,3 @@
--- Biblioteca ajustada
 local Library = {}
 
 function Library:GetColor(color, table)
@@ -20,19 +19,11 @@ function Library:GetColor(color, table)
     end
 end
 
-function Library:GetSide(LeftSize, RightSize)
-    if LeftSize - 1 > RightSize - 1 then
-        return "Right"
-    else
-        return "Left"
-    end
-end
-
 function Library:CreateWindow(title, color)
     title = title or "Bracket Lib V2"
     color = color and Library:GetColor(color) or Color3.fromRGB(19, 119, 255)
 
-    -- Definindo variáveis e instâncias principais
+    -- Variáveis da janela principal
     local WinTypes = {}
     local WindowDragging, SliderDragging, ColorPickerDragging = false, false, false
     local keybind = "RightControl"
@@ -50,7 +41,7 @@ function Library:CreateWindow(title, color)
     local UIListLayout = Instance.new("UIListLayout")
     local container = Instance.new("Frame")
 
-    -- Propriedades da Janela
+    -- Propriedades da janela
     BracketV2.Name = title
     BracketV2.Parent = game.CoreGui
     BracketV2.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -121,65 +112,55 @@ function Library:CreateWindow(title, color)
     container.Position = UDim2.new(0, 0, 0.0504032262, 0)
     container.Size = UDim2.new(1, 0, 0.949596763, 0)
 
-    -- Código para arrastar a janela
-    local userinputservice = game:GetService("UserInputService")
-    local dragInput, dragStart, startPos = nil, nil, nil
+    -- Função para criar abas (tabs)
+    function WinTypes:CreateTab(name)
+        name = name or "NewTab"
 
-    core.InputBegan:Connect(function(input)
-        if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and userinputservice:GetFocusedTextBox() == nil then
-            dragStart = input.Position
-            startPos = core.Position
-            WindowDragging = true
-            input.Changed:Connect(function()
-                if (input.UserInputState == Enum.UserInputState.End) then
-                    WindowDragging = false
+        -- Instâncias para a aba
+        local TabTypes = {}
+        local tab = Instance.new("TextButton")
+        local title = Instance.new("TextLabel")
+        local Pattern = Instance.new("Frame")
+
+        -- Propriedades da aba
+        tab.Name = "tab"
+        tab.Parent = tabbar
+        tab.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
+        tab.BorderSizePixel = 0
+        tab.Size = UDim2.new(0, tabbar.AbsoluteSize.X / (#tabbar:GetChildren()), 0, 25)
+        tab.Font = Enum.Font.SourceSans
+        tab.Text = ""
+        
+        title.Name = "title"
+        title.Parent = tab
+        title.Size = UDim2.new(1, 0, 1, 0)
+        title.Font = Enum.Font.SourceSans
+        title.Text = name
+        title.TextColor3 = Color3.fromRGB(255, 255, 255)
+        title.TextSize = 18.000
+        
+        Pattern.Name = "container"
+        Pattern.Parent = container
+        Pattern.Size = UDim2.new(1, 0, 1, -25)
+        Pattern.Visible = false
+
+        -- Função de clique da aba
+        tab.MouseButton1Click:Connect(function()
+            Pattern.Visible = true
+            for _, otherTab in pairs(container:GetChildren()) do
+                if otherTab:IsA("Frame") and otherTab ~= Pattern then
+                    otherTab.Visible = false
                 end
-            end)
-        end
-    end)
-
-    core.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-            dragInput = input
-        end
-    end)
-
-    userinputservice.InputChanged:Connect(function(input)
-        if input == dragInput and WindowDragging and not SliderDragging and not ColorPickerDragging then
-            local Delta = input.Position - dragStart
-            local Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
-            core.Position = Position
-        end
-    end)
-
-    userinputservice.InputBegan:Connect(function(input)
-        if (cancbind) then
-            if (input.KeyCode == Enum.KeyCode[keybind]) then
-                BracketV2.Enabled = not BracketV2.Enabled
             end
-        else
-            if (input.KeyCode == Enum.KeyCode.RightControl) then
-                BracketV2.Enabled = not BracketV2.Enabled
-            end
+        end)
+
+        -- Definindo como a primeira aba visível
+        if #tabbar:GetChildren() == 1 then
+            Pattern.Visible = true
         end
-    end)
 
-    -- Window Types
-    function WinTypes:Destroy()
-        BracketV2:Destroy()
+        return TabTypes
     end
-
-    function WinTypes:UpdateColor(newcolor)
-        color = Library:GetColor(newcolor)
-    end
-
-    function WinTypes:UpdateBind(bind, custombind)
-        keybind = bind
-        cancbind = custombind
-    end
-
-    -- Adicione suas funções de interface aqui:
-    -- Funções de CreateToggle, CreateButton, CreateDropdown, etc.
 
     return WinTypes, BracketV2
 end
