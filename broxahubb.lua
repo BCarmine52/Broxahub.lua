@@ -16,16 +16,19 @@ function Library:CreateWindow(title)
     GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     GUI.ResetOnSpawn = false
 
-    -- Main Frame centralizado
+    -- Main Frame centralizado com animação de início
     MainFrame.Name = "MainFrame"
     MainFrame.Parent = GUI
     MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MainFrame.BorderSizePixel = 0
     MainFrame.Position = UDim2.fromScale(0.5, 0.5)  -- Centraliza a HUD no meio da tela
-    MainFrame.Size = UDim2.new(0, 300, 0, 400)  -- Tamanho adequado para dispositivos móveis e desktop
+    MainFrame.Size = UDim2.new(0, 310, 0, 0)  -- Começa com altura 0 para a animação
     MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)  -- Garante centralização ao redor do ponto médio
     MainFrame.BackgroundTransparency = 0
     MainFrame.ClipsDescendants = true
+
+    -- Animação de início
+    MainFrame:TweenSize(UDim2.new(0, 310, 0, 400), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.5, true)
 
     -- Cantos arredondados para o MainFrame
     local MainFrameCorner = Instance.new("UICorner")
@@ -67,7 +70,7 @@ function Library:CreateWindow(title)
     MinimizeBox.Parent = GUI
     MinimizeBox.Size = UDim2.new(0, 55, 0, 55)
     MinimizeBox.Position = MainFrame.Position
-    MinimizeBox.Text = "BX"
+    MinimizeBox.Text = "BH"
     MinimizeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
     MinimizeBox.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MinimizeBox.BorderSizePixel = 0
@@ -152,7 +155,7 @@ function Library:CreateWindow(title)
         local Tab = {}
         name = name or "Tab"
 
-        -- Tab Button
+        -- Tab Button com animação de seleção
         local TabButton = Instance.new("TextButton")
         TabButton.Name = name .. "Button"
         TabButton.Parent = TabBar
@@ -182,10 +185,20 @@ function Library:CreateWindow(title)
                 tab.Visible = false
             end
             TabFrame.Visible = true
+
+            -- Animação de seleção de tab com mudança de cor
+            for _, button in pairs(TabBar:GetChildren()) do
+                if button:IsA("TextButton") then
+                    button.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+                end
+            end
+
+            TabButton:TweenBackgroundColor3(Color3.fromRGB(75, 150, 255), "Out", "Quad", 0.3, true)
         end)
 
         if #TabContainer:GetChildren() == 1 then
             TabFrame.Visible = true
+            TabButton.BackgroundColor3 = Color3.fromRGB(75, 150, 255)  -- Define a primeira tab como ativa
         end
 
         function Tab:CreateGroupbox()
