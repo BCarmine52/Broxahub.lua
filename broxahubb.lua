@@ -15,13 +15,13 @@ function Library:CreateWindow(title)
     GUI.Parent = game.CoreGui
     GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-    -- Main Frame
+    -- Main Frame (HUD) aumentado de tamanho
     MainFrame.Name = "MainFrame"
     MainFrame.Parent = GUI
     MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     MainFrame.BorderSizePixel = 0
     MainFrame.Position = UDim2.new(0.3, 0, 0.2, 0)
-    MainFrame.Size = UDim2.new(0, 350, 0, 250)
+    MainFrame.Size = UDim2.new(0, 450, 0, 350)
     MainFrame.BackgroundTransparency = 0.1
     MainFrame.ClipsDescendants = true
     MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -180,18 +180,25 @@ function Library:CreateWindow(title)
         function Tab:CreateGroupbox()
             local Groupbox = {}
 
-            local ContentFrame = Instance.new("Frame")
-            ContentFrame.Parent = TabFrame
-            ContentFrame.Position = UDim2.new(0, 0, 0, 0)
-            ContentFrame.Size = UDim2.new(1, 0, 1, 0)
-            ContentFrame.BackgroundTransparency = 1
+            -- Scrolling Frame para permitir rolagem nos botões
+            local ScrollingFrame = Instance.new("ScrollingFrame")
+            ScrollingFrame.Parent = TabFrame
+            ScrollingFrame.Position = UDim2.new(0, 0, 0, 0)
+            ScrollingFrame.Size = UDim2.new(1, 0, 1, 0)
+            ScrollingFrame.BackgroundTransparency = 1
+            ScrollingFrame.CanvasSize = UDim2.new(0, 0, 3, 0) -- Ajuste a altura conforme necessário
+            ScrollingFrame.ScrollBarThickness = 5
+
+            local UIListLayout = Instance.new("UIListLayout")
+            UIListLayout.Parent = ScrollingFrame
+            UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+            UIListLayout.Padding = UDim.new(0, 5)
 
             function Groupbox:CreateButton(text, callback)
                 local Button = Instance.new("TextButton")
-                Button.Parent = ContentFrame
+                Button.Parent = ScrollingFrame
                 Button.Text = text
                 Button.Size = UDim2.new(1, -10, 0, 25)
-                Button.Position = UDim2.new(0, 5, 0, #ContentFrame:GetChildren() * 30)
                 Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
                 Button.TextColor3 = Color3.fromRGB(255, 255, 255)
                 Button.Font = Enum.Font.Gotham
@@ -202,10 +209,9 @@ function Library:CreateWindow(title)
 
             function Groupbox:CreateToggle(text, callback)
                 local Toggle = Instance.new("TextButton")
-                Toggle.Parent = ContentFrame
+                Toggle.Parent = ScrollingFrame
                 Toggle.Text = text
                 Toggle.Size = UDim2.new(1, -10, 0, 25)
-                Toggle.Position = UDim2.new(0, 5, 0, #ContentFrame:GetChildren() * 30)
                 Toggle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
                 Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
                 Toggle.Font = Enum.Font.Gotham
@@ -221,10 +227,9 @@ function Library:CreateWindow(title)
 
             function Groupbox:CreateDropdown(text, options, callback)
                 local Dropdown = Instance.new("TextButton")
-                Dropdown.Parent = ContentFrame
+                Dropdown.Parent = ScrollingFrame
                 Dropdown.Text = text
                 Dropdown.Size = UDim2.new(1, -10, 0, 25)
-                Dropdown.Position = UDim2.new(0, 5, 0, #ContentFrame:GetChildren() * 30)
                 Dropdown.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
                 Dropdown.TextColor3 = Color3.fromRGB(255, 255, 255)
                 Dropdown.Font = Enum.Font.Gotham
@@ -243,7 +248,6 @@ function Library:CreateWindow(title)
                     OptionButton.Parent = DropdownList
                     OptionButton.Text = option
                     OptionButton.Size = UDim2.new(1, -10, 0, 25)
-                    OptionButton.Position = UDim2.new(0, 5, 0, (#DropdownList:GetChildren() - 1) * 25)
                     OptionButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
                     OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
                     OptionButton.Font = Enum.Font.Gotham
