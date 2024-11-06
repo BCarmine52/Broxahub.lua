@@ -53,7 +53,7 @@ function Library:CreateWindow(title)
     MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     MinimizeButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
-    MinimizeButton.Position = UDim2.new(0.87, 0, 0, 0) -- Movido ligeiramente para a esquerda
+    MinimizeButton.Position = UDim2.new(0.83, 0, 0, 0) -- Movido ligeiramente para a esquerda
     MinimizeButton.BorderSizePixel = 0
 
     local MinimizeCorner = Instance.new("UICorner")
