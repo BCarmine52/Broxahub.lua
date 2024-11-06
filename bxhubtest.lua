@@ -53,7 +53,7 @@ function Library:CreateWindow(title)
     MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     MinimizeButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
-    MinimizeButton.Position = UDim2.new(0.87, 0, 0, 0) -- Movido ligeiramente para a esquerda
+    MinimizeButton.Position = UDim2.new(0.87, 0, 0, 0)
     MinimizeButton.BorderSizePixel = 0
 
     local MinimizeCorner = Instance.new("UICorner")
@@ -134,7 +134,7 @@ function Library:CreateWindow(title)
     TabContainer.Name = "TabContainer"
     TabContainer.Parent = MainFrame
     TabContainer.BackgroundTransparency = 1
-    TabContainer.Position = UDim2.new(0, 0, 0, 65) -- Ajustado para dar mais espaço entre as tabs e o conteúdo
+    TabContainer.Position = UDim2.new(0, 0, 0, 65)
     TabContainer.Size = UDim2.new(1, 0, 1, -65)
 
     -- Layout for Tabs
@@ -144,7 +144,6 @@ function Library:CreateWindow(title)
     TabListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     TabListLayout.Padding = UDim.new(0, 5)
 
-    -- Função para descarregar a HUD
     function Window:Unload()
         GUI:Destroy()
     end
@@ -170,7 +169,6 @@ function Library:CreateWindow(title)
         TabButtonCorner.CornerRadius = UDim.new(0, 5)
         TabButtonCorner.Parent = TabButton
 
-        -- Tab Content
         local TabFrame = Instance.new("Frame")
         TabFrame.Name = name .. "Content"
         TabFrame.Parent = TabContainer
@@ -178,7 +176,6 @@ function Library:CreateWindow(title)
         TabFrame.BackgroundTransparency = 1
         TabFrame.Visible = false
 
-        -- Função para atualizar a seleção da tab
         local function updateTabSelection()
             for _, button in pairs(TabBar:GetChildren()) do
                 if button:IsA("TextButton") then
@@ -189,7 +186,6 @@ function Library:CreateWindow(title)
         end
 
         TabButton.MouseButton1Click:Connect(function()
-            -- Esconde todas as outras tabs
             for _, tab in pairs(TabContainer:GetChildren()) do
                 tab.Visible = false
             end
@@ -197,7 +193,6 @@ function Library:CreateWindow(title)
             updateTabSelection()
         end)
 
-        -- Definir a primeira tab como ativa
         if #TabContainer:GetChildren() == 1 then
             TabFrame.Visible = true
             updateTabSelection()
@@ -206,7 +201,6 @@ function Library:CreateWindow(title)
         function Tab:CreateGroupbox()
             local Groupbox = {}
 
-            -- Scrolling Frame para permitir rolagem nos botões
             local ScrollingFrame = Instance.new("ScrollingFrame")
             ScrollingFrame.Parent = TabFrame
             ScrollingFrame.Position = UDim2.new(0, 0, 0, 0)
@@ -257,6 +251,42 @@ function Library:CreateWindow(title)
                     isToggled = not isToggled
                     callback(isToggled)
                     Toggle.BackgroundColor3 = isToggled and Color3.fromRGB(50, 50, 50) or Color3.fromRGB(30, 30, 30)
+                end)
+            end
+
+            function Groupbox:CreateToggleButton(text, callback)
+                local ToggleButtonFrame = Instance.new("Frame")
+                ToggleButtonFrame.Parent = ScrollingFrame
+                ToggleButtonFrame.Size = UDim2.new(1, -10, 0, 25)
+                ToggleButtonFrame.BackgroundTransparency = 1
+
+                local ToggleButtonLabel = Instance.new("TextLabel")
+                ToggleButtonLabel.Parent = ToggleButtonFrame
+                ToggleButtonLabel.Text = text
+                ToggleButtonLabel.Size = UDim2.new(0.8, 0, 1, 0)
+                ToggleButtonLabel.BackgroundTransparency = 1
+                ToggleButtonLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+                ToggleButtonLabel.Font = Enum.Font.Gotham
+                ToggleButtonLabel.TextSize = 14
+                ToggleButtonLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+                local Toggle = Instance.new("TextButton")
+                Toggle.Parent = ToggleButtonFrame
+                Toggle.Size = UDim2.new(0.15, 0, 0.8, 0)
+                Toggle.Position = UDim2.new(0.85, 0, 0.1, 0)
+                Toggle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+                Toggle.Text = ""
+                Toggle.BorderSizePixel = 0
+
+                local ToggleCorner = Instance.new("UICorner")
+                ToggleCorner.CornerRadius = UDim.new(0, 5)
+                ToggleCorner.Parent = Toggle
+
+                local isToggled = false
+                Toggle.MouseButton1Click:Connect(function()
+                    isToggled = not isToggled
+                    callback(isToggled)
+                    Toggle.BackgroundColor3 = isToggled and Color3.fromRGB(50, 150, 50) or Color3.fromRGB(30, 30, 30)
                 end)
             end
 
